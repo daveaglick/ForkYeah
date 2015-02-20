@@ -33,7 +33,7 @@
     {
         using (navbar.NavbarNav().SetRight().Begin())
         {
-            @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddStyle("margin-left", "12px").AddStyle("margin-right", "12px")
+            @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button")
         }
     }
     @RenderBody()

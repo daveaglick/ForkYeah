@@ -5,6 +5,12 @@ body {
     padding-top: 50px; 
 }
 
+.add-button {
+    margin-left: @padding-base-horizontal;
+    margin-right: @padding-base-horizontal;
+    font-weight: bold;
+}
+
 .repo-col {
     padding-left: @padding-base-horizontal;
     padding-right: @padding-base-horizontal;
@@ -13,6 +19,10 @@ body {
 
 .repo-row {
     margin-bottom: @padding-large-vertical;
+}
+
+.bottom-margin {
+    margin-bottom: 28px;
 }
 
 @media (min-width: @screen-lg-min) {
@@ -33,22 +43,32 @@ body {
         width: 100%;
 
         & > div {
-            padding-left: @padding-base-horizontal;
-            padding-right: @padding-base-horizontal;
-            padding-top: @padding-large-vertical;
-            border-left: 1px solid @gray-lighter;
             display: table-cell;
-            width: 30%;
-
-            &:first-child {
-                border-left: none;
-                width: 10%;
-            }
+            float: none;
+            height: 100%;
         }
     }
 
-    .repo-grid {        
-        .container-fixed();
+    .intro-col {
+        width: 15%;
+        background-color: @brand-primary;
+        border-top-right-radius: @border-radius-large;
+        color: white;        
+        padding-left: @padding-base-horizontal;
+        padding-right: @padding-base-horizontal;
+    }
+    
+    .repo-col {
+        width: 25%;
+        padding-left: @padding-base-horizontal;
+        padding-right: @padding-base-horizontal;
+    }
+    
+    .content-col {
+        width: 60%;
+        border-left: 1px solid @gray-lighter;
+        padding: 0;
+        vertical-align: top;
     }
 
     .repo-row {
@@ -60,7 +80,6 @@ body {
 
         & > div {
             display: table-cell;
-            padding-bottom: @padding-large-vertical;
         }
     }
 
