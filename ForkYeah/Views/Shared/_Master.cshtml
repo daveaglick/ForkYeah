@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+    <title>Fork Yeah!@(string.IsNullOrWhiteSpace(Title) ? string.Empty : " - " + Title)</title>
+    <meta name="description" content="Find undiscovered open source projects." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <link href="@Links.Content.bootstrap_min_css" rel="stylesheet">
+
+    <meta name="application-name" content="Fork Yeah!" />
+    <meta name="msapplication-tooltip" content="Fork Yeah!" />
+    <meta name="msapplication-starturl" content="/" />
+
+    <meta property="og:title" content="Fork Yeah!@(string.IsNullOrWhiteSpace(Title) ? string.Empty : " - " + Title)" />
+    @* <meta property="og:image" content="@Blog.Image" /> *@
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@(Request.Url.Scheme +"://" + Request.Url.Authority + Request.RawUrl)" />
+    <!-- TODO: More social graph meta tags -->
+
+    <script src="@Links.Scripts.jquery_2_1_3_min_js"></script>
+    <script src="@Links.Scripts.bootstrap_min_js"></script>
+</head>
+<body>
+    @using (var navbar = Bs.Navbar("Fork Yeah!").Begin())
+    {
+        using (var nav = navbar.NavbarCollapse().WithChild().NavbarNav().SetRight().Begin())
+        {
+            @nav.NavbarLink("About")
+            @nav.NavbarLink("Add")
+        }
+    }
+    @RenderBody()
+ </body>
+</html>
+
