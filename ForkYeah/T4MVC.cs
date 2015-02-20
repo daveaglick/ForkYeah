@@ -75,6 +75,7 @@ namespace Links
         public static readonly string jquery_2_1_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-2.1.3.min.js") ? Url("jquery-2.1.3.min.js") : Url("jquery-2.1.3.js");
         public static readonly string jquery_2_1_3_min_js = Url("jquery-2.1.3.min.js");
         public static readonly string jquery_2_1_3_min_map = Url("jquery-2.1.3.min.map");
+        public static readonly string jquery_nicescroll_min_js = Url("jquery.nicescroll.min.js");
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -194,6 +195,7 @@ namespace Links
                 public const string jquery_2_1_3_intellisense_js = "~/Scripts/jquery-2.1.3.intellisense.js"; 
                 public const string jquery_2_1_3_js = "~/Scripts/jquery-2.1.3.js"; 
                 public const string jquery_2_1_3_min_js = "~/Scripts/jquery-2.1.3.min.js"; 
+                public const string jquery_nicescroll_min_js = "~/Scripts/jquery.nicescroll.min.js"; 
             }
         }
         public static partial class Content 

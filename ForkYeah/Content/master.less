@@ -11,14 +11,32 @@ body {
     font-weight: bold;
 }
 
+.repo-row {
+    display: table-row;
+
+    & h3 {
+        margin-top: 0;
+    }
+
+    & > div {
+        display: table-cell;
+    }
+}
+
+.repo-link {
+    word-break: break-all;
+    vertical-align: top;
+}
+
+.repo-button {
+    padding-right: @padding-base-horizontal;
+    vertical-align: top;
+}
+
 .repo-col {
     padding-left: @padding-base-horizontal;
     padding-right: @padding-base-horizontal;
     padding-top: @padding-large-vertical;
-}
-
-.repo-row {
-    margin-bottom: @padding-large-vertical;
 }
 
 .bottom-margin {
@@ -46,7 +64,25 @@ body {
             display: table-cell;
             float: none;
             height: 100%;
+            padding: 0;
+            vertical-align: top;
         }
+    }
+
+    .relative-wrapper {
+        position: relative;
+        height: 100%;
+    }
+
+    .scroll-wrapper {
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding-left: @padding-base-horizontal;
+        padding-right: @padding-base-horizontal;
     }
 
     .intro-col {
@@ -54,37 +90,18 @@ body {
         background-color: @brand-primary;
         border-top-right-radius: @border-radius-large;
         color: white;        
-        padding-left: @padding-base-horizontal;
-        padding-right: @padding-base-horizontal;
     }
     
     .repo-col {
         width: 25%;
-        padding-left: @padding-base-horizontal;
-        padding-right: @padding-base-horizontal;
+
+        .scroll-wrapper {
+            padding-top: @line-height-computed;
+        }
     }
     
     .content-col {
         width: 60%;
         border-left: 1px solid @gray-lighter;
-        padding: 0;
-        vertical-align: top;
-    }
-
-    .repo-row {
-        display: table-row;
-
-        & h3 {
-            margin-top: 0;
-        }
-
-        & > div {
-            display: table-cell;
-        }
-    }
-
-    .repo-button {
-        padding-right: @padding-base-horizontal;
-        min-width: 150px;
     }
 }

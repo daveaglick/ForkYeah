@@ -4,52 +4,64 @@
     {
         using (Bs.Div().AddCss("intro-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
         {
-            @Bs.Heading2("Find awesome undiscovered open source projects").AddCss("bottom-margin")
-    
-            @Bs.Button("Add a Project").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("bottom-margin")
-    
-            using (@Bs.Div().AddCss("bottom-margin").Begin())
+            using(Bs.Div().AddCss("relative-wrapper").Begin())
             {
-                @Bs.Paragraph("Filter by language:")
-                using(Bs.Heading4().Begin())
-                {
-                    @Bs.Label("C#") @Bs.Label("Java") @Bs.Label("JavaScript") @Bs.Label("Ruby")
+                using(Bs.Div().AddCss("scroll-wrapper").Begin())
+                {                    
+                    @Bs.Heading2("Find awesome undiscovered open source projects").AddCss("bottom-margin")
+    
+                    @Bs.Button("Add a Project").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("bottom-margin")
+    
+                    using (@Bs.Div().AddCss("bottom-margin").Begin())
+                    {
+                        @Bs.Paragraph("Filter by language:")
+                        using(Bs.Heading4().Begin())
+                        {
+                            @Bs.Label("C#") @Bs.Label("Java") @Bs.Label("JavaScript") @Bs.Label("Ruby")
+                        }
+                    }
+
+                    <hr />
+                    @Bs.Paragraph("Here's how we help maintain the quality of projects listed on the site while focusing on those that haven't gotten the attention they deserve:")
+                    @Bs.Paragraph(Bs.Icon(Icon.Star) + " Projects must have less than 100 GitHub stars when added")
+                    @Bs.Paragraph(Bs.Icon(Icon.Calendar) + " Projects must have at least 6 months commit history")
+                    @Bs.Paragraph(Bs.Icon(Icon.Pencil) + " Projects must have at least 10 commits")
+                    @Bs.Paragraph(Bs.Icon(Icon.File) + " Projects must have a readme file")
+                    @Bs.Paragraph(Bs.Icon(Icon.Time) + " Listings last for 48 hours")
+                    @Bs.Paragraph(Bs.Icon(Icon.TriangleTop) + " Rankings are based on increase in GitHub stars")
                 }
             }
-
-            <hr />
-            @Bs.Paragraph("Here's how we help maintain the quality of projects listed on the site while focusing on those that haven't gotten the attention they deserve:")
-            @Bs.Paragraph(Bs.Icon(Icon.Star) + " Projects must have less than 100 GitHub stars when added")
-            @Bs.Paragraph(Bs.Icon(Icon.Calendar) + " Projects must have at least 6 months commit history")
-            @Bs.Paragraph(Bs.Icon(Icon.Pencil) + " Projects must have at least 10 commits")
-            @Bs.Paragraph(Bs.Icon(Icon.File) + " Projects must have a readme file")
-            @Bs.Paragraph(Bs.Icon(Icon.Time) + " Listings last for 48 hours")
-            @Bs.Paragraph(Bs.Icon(Icon.TriangleTop) + " Rankings are based on increase in GitHub stars")
         }
         using (Bs.Div().AddCss("repo-col").Begin())
         {
-            for (int c = 0; c < 3; c++)
+            using (Bs.Div().AddCss("relative-wrapper").Begin())
             {
-                using (Bs.Div().AddCss("repo-row").Begin())
+                using (Bs.Div().AddCss("scroll-wrapper").Begin())
                 {
-                    using (Bs.Div().AddCss("repo-button").Begin())
+                    for (int c = 0; c < 10; c++)
                     {
-                        using (Bs.ButtonGroup().Begin())
+                        using (Bs.Div().AddCss("repo-row").Begin())
                         {
-                            @Bs.Button("134").SetIcon(Icon.Star)
-                            @Bs.Button("545").SetIcon(Icon.TriangleTop).SetState(ButtonState.Primary)
+                            using (Bs.Div().AddCss("repo-button").Begin())
+                            {
+                                using (Bs.ButtonGroup().SetVertical().Begin())
+                                {
+                                    @Bs.Button("545").SetIcon(Icon.TriangleTop).SetState(ButtonState.Primary)
+                                    @Bs.Button("134").SetIcon(Icon.Star)
+                                }
+                            }
+                            using (Bs.Div().AddCss("repo-link").Begin())
+                            {
+                                using (Bs.Heading3().Begin())
+                                {
+                                    @Bs.Link("FluentBootstrap")
+                                }
+                                @Bs.Paragraph("This is the description of the product.")
+                            }
                         }
-                    }
-                    using (Bs.Div().AddCss("repo-link").Begin())
-                    {
-                        using (Bs.Heading3().Begin())
-                        {
-                            @Bs.Link("FluentBootstrap")
-                        }
-                        @Bs.Paragraph("This is the description of the product.")
+                        @Bs.Element("hr")
                     }
                 }
-                @Bs.Element("hr")
             }
         }
         using (Bs.Div().AddCss("content-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
