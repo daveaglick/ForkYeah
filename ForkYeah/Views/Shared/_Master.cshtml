@@ -11,7 +11,9 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-    <link href="@Links.Content.bootstrap_min_css" rel="stylesheet">
+    <link href="@Links.Content.bootstrap.bootstrap_less" rel="stylesheet">
+    <link href="@Links.Content.bootstrap.theme_less" rel="stylesheet" />
+    <link href="@Links.Content.master_less" rel="stylesheet">
 
     <meta name="application-name" content="Fork Yeah!" />
     <meta name="msapplication-tooltip" content="Fork Yeah!" />
@@ -27,7 +29,7 @@
     <script src="@Links.Scripts.bootstrap_min_js"></script>
 </head>
 <body>
-    @using (var navbar = Bs.Navbar("Fork Yeah!").Begin())
+    @using (var navbar = Bs.Navbar("Fork Yeah!").SetFluid(false).Begin())
     {
         using (var nav = navbar.NavbarCollapse().WithChild().NavbarNav().SetRight().Begin())
         {

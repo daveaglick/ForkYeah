@@ -1,1 +1,44 @@
-﻿
+﻿@using(var container = Bs.Container().Begin())
+{
+    using(var row = container.GridRow().Begin())
+    {
+        using (row.GridColumn(8).Begin())
+        {
+            using(var repoRow = container.GridRow().AddCss("repo-row").Begin())
+            {
+                using(repoRow.GridColumn(3).Begin())
+                {
+                    @Bs.Button("13").SetIcon(Icon.Star).WithChild().Badge("+ 5")
+                }
+                using(repoRow.GridColumn(9).Begin())
+                {
+                    using(Bs.Heading3().Begin())
+                    {
+                        @Bs.Link("FluentBootstrap")
+                    }
+                    @Bs.Div("This is the description of the product.")
+                }
+            }
+
+            using (var repoRow = container.GridRow().AddCss("repo-row").Begin())
+            {
+                using (repoRow.GridColumn(3).Begin())
+                {
+                    @Bs.Button("13").SetIcon(Icon.Star).WithChild().Badge("+ 5")
+                }
+                using (repoRow.GridColumn(9).Begin())
+                {
+                    using (Bs.Heading3().Begin())
+                    {
+                        @Bs.Link("FluentBootstrap")
+                    }
+                    @Bs.Div("This is the description of the product.")
+                }
+            }
+        }
+        using (row.GridColumn(4).Begin())
+        {
+            <div>Comments & Details</div>
+        }
+    }
+}
