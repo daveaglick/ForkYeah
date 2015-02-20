@@ -1,14 +1,71 @@
 ﻿@import "bootstrap\\variables.less";
 @import "bootstrap\\mixins.less";
 
-.repo-row {
-    margin-bottom: 20px;
+body { 
+    padding-top: 50px; 
 }
 
-@media (min-width: @screen-md-min) {
+.repo-col {
+    padding-left: @padding-base-horizontal;
+    padding-right: @padding-base-horizontal;
+    padding-top: @padding-large-vertical;
+}
+
+.repo-row {
+    margin-bottom: @padding-large-vertical;
+}
+
+@media (min-width: @screen-lg-min) {
+
+    html, body {
+        height: 100%;
+    }
+
+    .master-container {
+        display: table;
+        height: 100%;
+        width: 100%;
+    }
+
+    .master-row {
+        display: table-row;
+        height: 100%;
+        width: 100%;
+
+        & > div {
+            padding-left: @padding-base-horizontal;
+            padding-right: @padding-base-horizontal;
+            padding-top: @padding-large-vertical;
+            border-left: 1px solid @gray-lighter;
+            display: table-cell;
+            width: 30%;
+
+            &:first-child {
+                border-left: none;
+                width: 10%;
+            }
+        }
+    }
+
+    .repo-grid {        
+        .container-fixed();
+    }
+
     .repo-row {
+        display: table-row;
+
         & h3 {
             margin-top: 0;
         }
+
+        & > div {
+            display: table-cell;
+            padding-bottom: @padding-large-vertical;
+        }
+    }
+
+    .repo-button {
+        padding-right: @padding-base-horizontal;
+        min-width: 150px;
     }
 }

@@ -29,12 +29,11 @@
     <script src="@Links.Scripts.bootstrap_min_js"></script>
 </head>
 <body>
-    @using (var navbar = Bs.Navbar("Fork Yeah!").SetFluid(false).Begin())
+    @using (var navbar = Bs.Navbar("Fork Yeah!").SetFluid().SetPosition(NavbarPosition.FixedTop).Begin())
     {
-        using (var nav = navbar.NavbarCollapse().WithChild().NavbarNav().SetRight().Begin())
+        using (navbar.NavbarNav().SetRight().Begin())
         {
-            @nav.NavbarLink("About")
-            @nav.NavbarLink("Add")
+            @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddStyle("margin-left", "12px").AddStyle("margin-right", "12px")
         }
     }
     @RenderBody()

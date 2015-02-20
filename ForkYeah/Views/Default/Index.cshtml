@@ -1,44 +1,44 @@
-﻿@using(var container = Bs.Container().Begin())
+﻿@using (Bs.Div().AddCss("master-container").Begin())
 {
-    using(var row = container.GridRow().Begin())
+    using(Bs.Div().AddCss("master-row").Begin())
     {
-        using (row.GridColumn(8).Begin())
+        using (Bs.Div().SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
         {
-            using(var repoRow = container.GridRow().AddCss("repo-row").Begin())
+            @Bs.Div("Description and about")
+        }
+        using (Bs.Div().AddCss("repo-col").Begin())
+        {
+            for (int c = 0; c < 3; c++ )
             {
-                using(repoRow.GridColumn(3).Begin())
+                using (Bs.Div().AddCss("repo-row").Begin())
                 {
-                    @Bs.Button("13").SetIcon(Icon.Star).WithChild().Badge("+ 5")
-                }
-                using(repoRow.GridColumn(9).Begin())
-                {
-                    using(Bs.Heading3().Begin())
+                    using (Bs.Div().AddCss("repo-button").Begin())
                     {
-                        @Bs.Link("FluentBootstrap")
+                        using (Bs.ButtonGroup().Begin())
+                        {
+                        @Bs.Button("134").SetIcon(Icon.TriangleTop)
+                        @Bs.Button("545").SetIcon(Icon.Star).SetState(ButtonState.Primary)
+                        }
                     }
-                    @Bs.Div("This is the description of the product.")
-                }
-            }
-
-            using (var repoRow = container.GridRow().AddCss("repo-row").Begin())
-            {
-                using (repoRow.GridColumn(3).Begin())
-                {
-                    @Bs.Button("13").SetIcon(Icon.Star).WithChild().Badge("+ 5")
-                }
-                using (repoRow.GridColumn(9).Begin())
-                {
-                    using (Bs.Heading3().Begin())
+                    using (Bs.Div().AddCss("repo-link").Begin())
                     {
+                        using (Bs.Heading3().Begin())
+                        {
                         @Bs.Link("FluentBootstrap")
-                    }
+                        }
                     @Bs.Div("This is the description of the product.")
+                    }
                 }
+                @Bs.Element("hr")
             }
         }
-        using (row.GridColumn(4).Begin())
+        using (Bs.Div().SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
         {
-            <div>Comments & Details</div>
+            <div>Readme</div>
+        }
+        using (Bs.Div().SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
+        {
+            <div>Comments</div>
         }
     }
 }
