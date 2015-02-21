@@ -90,6 +90,10 @@ body {
         background-color: @brand-primary;
         border-top-right-radius: @border-radius-large;
         color: white;        
+        
+        #gradient > .vertical(@start-color: @brand-primary; @end-color: darken(@brand-primary, 10%));
+        .reset-filter(); // Disable gradients for IE9 because filter bleeds through rounded corners; see https://github.com/twbs/bootstrap/issues/10620
+        background-repeat: repeat-x;
     }
     
     .repo-col {
@@ -103,5 +107,10 @@ body {
     .content-col {
         width: 60%;
         border-left: 1px solid @gray-lighter;
+        vertical-align: top;
+    }
+
+    .navbar-brand {
+        font-size: @font-size-h1;
     }
 }

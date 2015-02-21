@@ -28,9 +28,17 @@
     <script src="@Links.Scripts.jquery_2_1_3_min_js"></script>
     <script src="@Links.Scripts.bootstrap_min_js"></script>
     <script src="@Links.Scripts.jquery_nicescroll_min_js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+        <script>
+            WebFont.load({
+                google: {
+                    families: ['Montserrat:400,700:latin']
+                }
+            });
+        </script>
 </head>
 <body>
-    @using (var navbar = Bs.Navbar("Fork Yeah!").SetFluid().SetPosition(NavbarPosition.FixedTop).Begin())
+    @using (var navbar = Bs.Navbar("FORK YEAH!").SetInverse().SetFluid().SetPosition(NavbarPosition.FixedTop).Begin())
     {
         using (navbar.NavbarNav().SetRight().Begin())
         {
