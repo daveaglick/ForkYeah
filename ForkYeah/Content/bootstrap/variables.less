@@ -859,14 +859,26 @@
 // ForkYeah overrides
 
 // Color palette shamelessly copied from http://flatuicolors.com/
+
+@gray-darker:            darken(#7f8c8d, 20%);
+@gray-dark:              darken(#7f8c8d, 15%);
+@gray:                   #7f8c8d;
+@gray-light:             #95a5a6;
+@gray-lighter:           #bdc3c7;
+@gray-lightest:          #ecf0f1;
+
 @brand-primary:         #2980b9;
 @brand-success:         #27ae60;
 @brand-info:            #2980b9;
 @brand-warning:         #f39c12;
 @brand-danger:          #c0392b;
+
 @headings-color:        lighten(#3498db, 20%);
 @font-family-sans-serif:  Montserrat, Helvetica, Arial, sans-serif;
 @headings-font-weight:    700;
+
 @navbar-inverse-bg:                darken(@brand-primary, 20%);
 @navbar-inverse-color: #fff;
 @navbar-inverse-link-color: #fff;
+
+@badge-bg:                    @gray;

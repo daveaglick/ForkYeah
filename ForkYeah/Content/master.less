@@ -2,7 +2,11 @@
 @import "bootstrap\\mixins.less";
 
 body { 
-    padding-top: 50px; 
+    padding-top: 56px; 
+}
+
+.navbar-brand {
+    font-weight: bold;
 }
 
 .add-button {
@@ -41,6 +45,18 @@ body {
 
 .bottom-margin {
     margin-bottom: 28px;
+}
+
+.details-header {
+    background-color: @gray-lightest;
+    border-bottom: 4px solid @gray-light;
+    padding: @padding-base-horizontal;
+    padding-top: @padding-large-horizontal;
+
+    & > h2 {
+        color: @brand-primary;
+        margin: 0;
+    }
 }
 
 @media (min-width: @screen-lg-min) {
@@ -107,10 +123,10 @@ body {
     .content-col {
         width: 60%;
         border-left: 1px solid @gray-lighter;
-        vertical-align: top;
     }
 
     .navbar-brand {
         font-size: @font-size-h1;
     }
+
 }

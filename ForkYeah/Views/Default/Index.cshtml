@@ -17,7 +17,7 @@
                         @Bs.Paragraph("Filter by language:")
                         using(Bs.Heading4().Begin())
                         {
-                            @Bs.Label("C#") @Bs.Label("Java") @Bs.Label("JavaScript") @Bs.Label("Ruby")
+                            @Bs.Badge("C#") @Bs.Badge("Java") @Bs.Badge("JavaScript") @Bs.Badge("Ruby")
                         }
                     }
 
@@ -55,8 +55,10 @@
                                 using (Bs.Heading3().Begin())
                                 {
                                     @Bs.Link("FluentBootstrap")
+                                    @Bs.Small(Bs.Icon(Icon.Comment).ToString() + " 4")
                                 }
-                                @Bs.Paragraph("This is the description of the product.")
+                                
+                                @Bs.Paragraph(Bs.Badge("C#").ToString() + " This is the description of the product.")
                             }
                         }
                         @Bs.Element("hr")
@@ -66,7 +68,30 @@
         }
         using (Bs.Div().AddCss("content-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
         {
-            <div style="background-color: #ecf0f1; padding: 12px;"><h2 style="color: #2980b9; margin: 0; padding: 0;">Project Name <small>Comments</small></h2></div>
+            
+            // Add view
+            using (Bs.Div().AddCss("add-view").SetVisibility(Visibility.Hidden).Begin())
+            {
+            }
+            
+            // Details view
+            using(Bs.Div().AddCss("details-view").Begin())
+            {
+                using (Bs.Div().AddCss("details-header").Begin())
+                {
+                    @Bs.Heading2("FluentBootstrap").SetSmallText("somedave / FluentBootstrap")
+                    @Bs.Div().AddChild(x => Bs.Strong("194 Commits / 2 Contributors / 16 Issues / Added: January 4, 2015"))
+                }
+                using (Bs.Div().AddCss("details-row").Begin())
+                {
+                    using (Bs.Div().AddCss("details-readme").Begin())
+                    {
+                    }
+                    using (Bs.Div().AddCss("details-comments").Begin())
+                    {
+                    }                    
+                }
+            }           
         }
     }
 }
