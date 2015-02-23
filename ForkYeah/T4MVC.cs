@@ -27,7 +27,6 @@ using T4MVC;
 public static partial class MVC
 {
     public static ForkYeah.Controllers.DefaultController Default = new ForkYeah.Controllers.T4MVC_DefaultController();
-    public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }
 
 namespace T4MVC
@@ -180,6 +179,24 @@ namespace Links
         }
     
         public static readonly string master_less = Url("master.less");
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public static class octicons {
+            private const string URLPATH = "~/Content/octicons";
+            public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+            public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+            public static readonly string LICENSE_txt = Url("LICENSE.txt");
+            public static readonly string octicons_local_ttf = Url("octicons-local.ttf");
+            public static readonly string octicons_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/octicons.min.css") ? Url("octicons.min.css") : Url("octicons.css");
+                 
+            public static readonly string octicons_eot = Url("octicons.eot");
+            public static readonly string octicons_less = Url("octicons.less");
+            public static readonly string octicons_svg = Url("octicons.svg");
+            public static readonly string octicons_ttf = Url("octicons.ttf");
+            public static readonly string octicons_woff = Url("octicons.woff");
+            public static readonly string README_md = Url("README.md");
+            public static readonly string sprockets_octicons_scss = Url("sprockets-octicons.scss");
+        }
+    
     }
 
     
@@ -216,6 +233,13 @@ namespace Links
             {
                 public static class Assets
                 {
+                }
+            }
+            public static partial class octicons 
+            {
+                public static class Assets
+                {
+                    public const string octicons_css = "~/Content/octicons/octicons.css";
                 }
             }
             public static class Assets
