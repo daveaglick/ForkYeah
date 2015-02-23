@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForkYeah", "ForkYeah\ForkYeah.csproj", "{C6E98B0E-F445-4F9C-95CD-8866EAE95EF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForkYeah.Data", "ForkYeah.Data\ForkYeah.Data.csproj", "{C8BE0F5E-82DB-432E-8EAD-4DA79D2CADCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C6E98B0E-F445-4F9C-95CD-8866EAE95EF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6E98B0E-F445-4F9C-95CD-8866EAE95EF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6E98B0E-F445-4F9C-95CD-8866EAE95EF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8BE0F5E-82DB-432E-8EAD-4DA79D2CADCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8BE0F5E-82DB-432E-8EAD-4DA79D2CADCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8BE0F5E-82DB-432E-8EAD-4DA79D2CADCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8BE0F5E-82DB-432E-8EAD-4DA79D2CADCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

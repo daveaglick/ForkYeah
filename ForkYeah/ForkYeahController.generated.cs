@@ -24,13 +24,13 @@ using System.Web.Routing;
 using T4MVC;
 namespace ForkYeah.Controllers
 {
-    public partial class DefaultController
+    public partial class ForkYeahController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public DefaultController() { }
+        public ForkYeahController() { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected DefaultController(Dummy d) { }
+        protected ForkYeahController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result)
@@ -60,13 +60,13 @@ namespace ForkYeah.Controllers
 
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public DefaultController Actions { get { return MVC.Default; } }
+        public ForkYeahController Actions { get { return MVC.ForkYeah; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "Default";
+        public readonly string Name = "ForkYeah";
         [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "Default";
+        public const string NameConst = "ForkYeah";
 
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -96,14 +96,14 @@ namespace ForkYeah.Controllers
             {
                 public readonly string Index = "Index";
             }
-            public readonly string Index = "~/Views/Default/Index.cshtml";
+            public readonly string Index = "~/Views/ForkYeah/Index.cshtml";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_DefaultController : ForkYeah.Controllers.DefaultController
+    public partial class T4MVC_ForkYeahController : ForkYeah.Controllers.ForkYeahController
     {
-        public T4MVC_DefaultController() : base(Dummy.Instance) { }
+        public T4MVC_ForkYeahController() : base(Dummy.Instance) { }
 
         [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);

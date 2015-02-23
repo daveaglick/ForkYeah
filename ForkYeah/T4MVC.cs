@@ -26,7 +26,7 @@ using T4MVC;
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static partial class MVC
 {
-    public static ForkYeah.Controllers.DefaultController Default = new ForkYeah.Controllers.T4MVC_DefaultController();
+    public static ForkYeah.Controllers.ForkYeahController ForkYeah = new ForkYeah.Controllers.T4MVC_ForkYeahController();
 }
 
 namespace T4MVC

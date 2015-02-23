@@ -118,46 +118,51 @@
                     }
                 }
             }
+            
+            // Content
             using (Bs.Div().AddCss("table-cell", "full-height", "content-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
-            {
-            
-                // Add
-                using (Bs.Div().AddCss("add-view").SetVisibility(Visibility.Hidden).Begin())
-                {
-                }
-            
-                // Details
+            {            
                 using(Bs.Div().AddCss("table", "full-height", "details-view").Begin())
                 {
                     using (Bs.Div().AddCss("table-row").Begin())
                     {
                         using (Bs.Div().AddCss("table-cell").Begin())
                         {
-                            using (Bs.Div().AddCss("details-header").Begin())
+                            // Content Header
+                            using (Bs.Div().AddCss("content-header").Begin())
                             {
+                                /*
                                 @Bs.Heading2("FluentBootstrap").SetSmallText("somedave / FluentBootstrap ")
                                 @Bs.Div().AddChild(x => Bs.Strong(Bs.Badge("C#").ToString() + " "
                                     + Bs.Span().AddCss("octicon", "octicon-history") + " 194 Commits / "
                                     + Bs.Span().AddCss("octicon", "octicon-organization") + " 2 Contributors / "
                                     + Bs.Span().AddCss("octicon", "octicon-issue-opened") + " 16 Issues / Added: January 4, 2015"))
+                                */
+                                @Bs.Heading2("Add a Project")
                             }
                         }
                     }
                     using (Bs.Div().AddCss("table-row", "full-height").Begin())
-                    {                    
+                    {
                         using (Bs.Div().AddCss("table-cell", "full-height", "details-readme").Begin())
                         {
-                            using(Bs.Div().AddCss("table", "full-height").Begin())
+                            using (Bs.Div().AddCss("table", "full-height").Begin())
                             {
-                                using (Bs.Div().AddCss("table-row", "full-height").Begin())
-                                {     
+                                // Add
+                                using (Bs.Div().AddCss("table-row", "full-height", "content-add").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
+                                {
+                                }
+
+                                // Details
+                                using (Bs.Div().AddCss("table-row", "full-height", "content-details").SetVisibility(Visibility.Hidden).Begin())
+                                {
                                     using (Bs.Div().AddCss("table-cell", "full-height", "details-readme").Begin())
                                     {
                                         using (Bs.Div().AddCss("relative-wrapper").Begin())
                                         {
                                             using (Bs.Div().AddCss("scroll-wrapper").Begin())
                                             {
-                                                for(int c = 0 ; c < 100 ; c++)
+                                                for (int c = 0; c < 100; c++)
                                                 {
                                                     @Bs.Paragraph("readme, readme, readme, " + c)
                                                 }
@@ -178,13 +183,15 @@
                                         }
                                     }
                                 }
+
+                                // Error
+                                using (Bs.Div().AddCss("table-row", "full-height", "content-error").SetVisibility(Visibility.Hidden).Begin())
+                                {
+                                }           
                             }
                         }
                     }
                 }
-                
-                // Error
-                // TODO
             }
         }
     }
