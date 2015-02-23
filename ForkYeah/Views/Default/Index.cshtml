@@ -1,8 +1,8 @@
-﻿@using (Bs.Div().AddCss("master-table").Begin())
+﻿@using (Bs.Div().AddCss("table", "full-height").Begin())
 {
-    using(Bs.Div().AddCss("master-row").Begin())
+    using(Bs.Div().AddCss("table-row", "full-height").Begin())
     {
-        using (Bs.Div().AddCss("intro-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
+        using (Bs.Div().AddCss("table-cell", "full-height", "intro-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
         {
             using(Bs.Div().AddCss("relative-wrapper").Begin())
             {
@@ -32,7 +32,7 @@
                 }
             }
         }
-        using (Bs.Div().AddCss("repo-col").Begin())
+        using (Bs.Div().AddCss("table-cell", "full-height", "repo-col").Begin())
         {
             using (Bs.Div().AddCss("relative-wrapper").Begin())
             {
@@ -66,7 +66,7 @@
                 }
             }
         }
-        using (Bs.Div().AddCss("content-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
+        using (Bs.Div().AddCss("table-cell", "full-height", "content-col").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
         {
             
             // Add view
@@ -75,39 +75,51 @@
             }
             
             // Details view
-            using(Bs.Div().AddCss("details-view").Begin())
+            using(Bs.Div().AddCss("table", "full-height", "details-view").Begin())
             {
-                using (Bs.Div().AddCss("details-header").Begin())
+                using (Bs.Div().AddCss("table-row").Begin())
                 {
-                    @Bs.Heading2("FluentBootstrap").SetSmallText("somedave / FluentBootstrap")
-                    @Bs.Div().AddChild(x => Bs.Strong("194 Commits / 2 Contributors / 16 Issues / Added: January 4, 2015"))
-                }
-                using (Bs.Div().AddCss("details-table").Begin())
-                {
-                    using (Bs.Div().AddCss("details-row").Begin())
+                    using (Bs.Div().AddCss("table-cell").Begin())
                     {
-                        using (Bs.Div().AddCss("details-readme").Begin())
+                        using (Bs.Div().AddCss("details-header").Begin())
                         {
-                            using (Bs.Div().AddCss("relative-wrapper").Begin())
-                            {
-                                using (Bs.Div().AddCss("scroll-wrapper").Begin())
+                            @Bs.Heading2("FluentBootstrap").SetSmallText("somedave / FluentBootstrap")
+                            @Bs.Div().AddChild(x => Bs.Strong("194 Commits / 2 Contributors / 16 Issues / Added: January 4, 2015"))
+                        }
+                    }
+                }
+                using (Bs.Div().AddCss("table-row", "full-height").Begin())
+                {                    
+                    using (Bs.Div().AddCss("table-cell", "full-height", "details-readme").Begin())
+                    {
+                        using(Bs.Div().AddCss("table", "full-height").Begin())
+                        {
+                            using (Bs.Div().AddCss("table-row", "full-height").Begin())
+                            {     
+                                using (Bs.Div().AddCss("table-cell", "full-height", "details-readme").Begin())
                                 {
-                                    for(int c = 0 ; c < 100 ; c++)
+                                    using (Bs.Div().AddCss("relative-wrapper").Begin())
                                     {
-                                        @Bs.Paragraph("readme, readme, readme, " + c)
+                                        using (Bs.Div().AddCss("scroll-wrapper").Begin())
+                                        {
+                                            for(int c = 0 ; c < 100 ; c++)
+                                            {
+                                                @Bs.Paragraph("readme, readme, readme, " + c)
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
-                        using (Bs.Div().AddCss("details-comments").Begin())
-                        {
-                            using (Bs.Div().AddCss("relative-wrapper").Begin())
-                            {
-                                using (Bs.Div().AddCss("scroll-wrapper").Begin())
+                                using (Bs.Div().AddCss("table-cell", "full-height", "details-comments").Begin())
                                 {
-                                    for (int c = 0; c < 100; c++)
+                                    using (Bs.Div().AddCss("relative-wrapper").Begin())
                                     {
-                                        @Bs.Paragraph("comments, comments, comments, " + c)
+                                        using (Bs.Div().AddCss("scroll-wrapper").Begin())
+                                        {
+                                            for (int c = 0; c < 100; c++)
+                                            {
+                                                @Bs.Paragraph("comments, comments, comments, " + c)
+                                            }
+                                        }
                                     }
                                 }
                             }

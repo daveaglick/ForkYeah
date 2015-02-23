@@ -68,26 +68,27 @@ body {
     
     .navbar-brand {
         font-size: @font-size-h1;
-    }
+    }    
 
-    .master-table {
+    .table {
         display: table;
-        height: 100%;
         width: 100%;
     }
 
-    .master-row {
+    .table-row {
         display: table-row;
-        height: 100%;
         width: 100%;
+    }
 
-        & > div {
-            display: table-cell;
-            float: none;
-            height: 100%;
-            padding: 0;
-            vertical-align: top;
-        }
+    .table-cell {
+        display: table-cell;
+        float: none;
+        padding: 0;
+        vertical-align: top;
+    }
+
+    .full-height {
+        height: 100%;
     }
 
     .relative-wrapper {
@@ -109,7 +110,6 @@ body {
     .intro-col {
         width: 15%;
         background-color: @brand-primary;
-        border-top-right-radius: @border-radius-large;
         color: white;        
         
         #gradient > .vertical(@start-color: @brand-primary; @end-color: darken(@brand-primary, 10%));
@@ -130,29 +130,12 @@ body {
         border-left: 1px solid @gray-lighter;
     }
 
-    .details-view {
-        height: 100%;
-    }
-    
-    .details-table {
-        display: table;
-        height: 100%;
-        width: 100%;
-    }
-        
-    .details-row {
-        display: table-row;
-        height: 100%;
-        width: 100%;
-
-        & > div {
-            display: table-cell;
-            float: none;
-            height: 100%;
-            width: 50%;
-            padding: 0;
-            vertical-align: top;
-        }
+    .details-readme {        
+        border-right: 1px solid @gray-lighter;
+        width: 50%;
     }
 
+    .details-comments {
+        width: 50%;
+    }
 }
