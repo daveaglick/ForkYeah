@@ -24,13 +24,13 @@ using System.Web.Routing;
 using T4MVC;
 namespace ForkYeah.Controllers
 {
-    public partial class ForkYeahController
+    public partial class DefaultController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ForkYeahController() { }
+        public DefaultController() { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected ForkYeahController(Dummy d) { }
+        protected DefaultController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result)
@@ -58,15 +58,21 @@ namespace ForkYeah.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Details()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ForkYeahController Actions { get { return MVC.ForkYeah; } }
+        public DefaultController Actions { get { return MVC.Default; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "ForkYeah";
+        public readonly string Name = "Default";
         [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "ForkYeah";
+        public const string NameConst = "Default";
 
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -75,15 +81,30 @@ namespace ForkYeah.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string Add = "Add";
+            public readonly string Ranked = "Ranked";
+            public readonly string Details = "Details";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string Add = "Add";
+            public const string Ranked = "Ranked";
+            public const string Details = "Details";
         }
 
 
+        static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Details DetailsParams { get { return s_params_Details; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Details
+        {
+            public readonly string owner = "owner";
+            public readonly string name = "name";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -94,16 +115,22 @@ namespace ForkYeah.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Add = "Add";
+                public readonly string Details = "Details";
                 public readonly string Index = "Index";
+                public readonly string Repositories = "Repositories";
             }
-            public readonly string Index = "~/Views/ForkYeah/Index.cshtml";
+            public readonly string Add = "~/Views/Default/Add.cshtml";
+            public readonly string Details = "~/Views/Default/Details.cshtml";
+            public readonly string Index = "~/Views/Default/Index.cshtml";
+            public readonly string Repositories = "~/Views/Default/Repositories.cshtml";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_ForkYeahController : ForkYeah.Controllers.ForkYeahController
+    public partial class T4MVC_DefaultController : ForkYeah.Controllers.DefaultController
     {
-        public T4MVC_ForkYeahController() : base(Dummy.Instance) { }
+        public T4MVC_DefaultController() : base(Dummy.Instance) { }
 
         [NonAction]
         partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
@@ -113,6 +140,41 @@ namespace ForkYeah.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             IndexOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Add()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
+            AddOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RankedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Ranked()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Ranked);
+            RankedOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string owner, string name);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Details(string owner, string name)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "owner", owner);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
+            DetailsOverride(callInfo, owner, name);
             return callInfo;
         }
 

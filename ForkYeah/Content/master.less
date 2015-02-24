@@ -15,7 +15,13 @@ body {
     font-weight: bold;
 }
 
-.repo-row {
+#repositories {
+    padding-left: @padding-base-horizontal;
+    padding-right: @padding-base-horizontal;
+    padding-top: @padding-large-vertical;
+}
+
+.repository {
     display: table-row;
 
     & h3 {
@@ -27,20 +33,17 @@ body {
     }
 }
 
-.repo-link {
+.repository-description {
+    vertical-align: top;
+}
+
+.repository-link {
     word-break: break-all;
-    vertical-align: top;
 }
 
-.repo-button {
+.repository-button {
     padding-right: @padding-base-horizontal;
     vertical-align: top;
-}
-
-.repo-col {
-    padding-left: @padding-base-horizontal;
-    padding-right: @padding-base-horizontal;
-    padding-top: @padding-large-vertical;
 }
 
 .bottom-margin {
@@ -107,7 +110,7 @@ body {
         padding-right: @padding-base-horizontal;
     }
 
-    .intro-col {
+    #intro {
         width: 15%;
         background-color: @brand-primary;
         color: white;        
@@ -117,7 +120,7 @@ body {
         background-repeat: repeat-x;
     }
     
-    .repo-col {
+    #repositories {
         width: 25%;
 
         .scroll-wrapper {
@@ -125,17 +128,17 @@ body {
         }
     }
     
-    .content-col {
+    #content {
         width: 60%;
         border-left: 1px solid @gray-lighter;
     }
 
-    .details-readme {        
+    .readme {        
         border-right: 1px solid @gray-lighter;
         width: 50%;
     }
 
-    .details-comments {
+    .comments {
         width: 50%;
     }
 }

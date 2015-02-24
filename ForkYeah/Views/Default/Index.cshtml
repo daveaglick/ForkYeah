@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+    <title>Fork Yeah!@(string.IsNullOrWhiteSpace(Title) ? string.Empty : " - " + Title)</title>
+    <meta name="description" content="Find undiscovered open source projects." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <link href="@Links.Content.bootstrap.bootstrap_less" rel="stylesheet">
+    <link href="@Links.Content.bootstrap.theme_less" rel="stylesheet" />
+    <link href="@Links.Content.octicons.octicons_css" rel="stylesheet">
+    <link href="@Links.Content.master_less" rel="stylesheet">
+
+    <meta name="application-name" content="Fork Yeah!" />
+    <meta name="msapplication-tooltip" content="Fork Yeah!" />
+    <meta name="msapplication-starturl" content="/" />
+
+    <meta property="og:title" content="Fork Yeah!@(string.IsNullOrWhiteSpace(Title) ? string.Empty : " - " + Title)" />
+    @* <meta property="og:image" content="@Blog.Image" /> *@
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="@(Request.Url.Scheme +"://" + Request.Url.Authority + Request.RawUrl)" />
+    <!-- TODO: More social graph meta tags -->
+
+    <script src="@Links.Scripts.jquery_2_1_3_min_js"></script>
+    <script src="@Links.Scripts.bootstrap_min_js"></script>
+    <script src="@Links.Scripts.jquery_nicescroll_min_js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+        <script>
+            WebFont.load({
+                google: {
+                    families: ['Montserrat:400,700:latin']
+                }
+            });
+        </script>
+</head>
+<body>
+    @using (var navbar = Bs.Navbar("FORK YEAH!").SetInverse().SetFluid().SetPosition(NavbarPosition.FixedTop).Begin())
+    {
+        using (navbar.NavbarNav().SetRight().Begin())
+        {
+            @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button")
+        }
+    }
+
+    @using (Bs.Div().AddCss("table", "full-height").Begin())
+    {
+        using(Bs.Div().AddCss("table-row", "full-height").Begin())
+        {
+            // Introduction
+            using (Bs.Div().AddCss("table-cell", "full-height").SetId("intro").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
+            {
+                using(Bs.Div().AddCss("relative-wrapper").Begin())
+                {
+                    using(Bs.Div().AddCss("scroll-wrapper").Begin())
+                    {                    
+                        @Bs.Heading2("Find awesome undiscovered open source projects").AddCss("bottom-margin")
+    
+                        @Bs.Button("Add a Project").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("bottom-margin")
+    
+                        using (@Bs.Div().AddCss("bottom-margin").Begin())
+                        {
+                            @Bs.Paragraph("Filter by language:")
+                            using(Bs.Heading4().Begin())
+                            {
+                                @Bs.Badge("C#") @Bs.Badge("Java") @Bs.Badge("JavaScript") @Bs.Badge("Ruby")
+                            }
+                        }
+
+                        <hr />
+                        @Bs.Paragraph("Here's how we help maintain the quality of projects listed on the site while focusing on those that haven't gotten the attention they deserve:")
+                        @Bs.Paragraph(Bs.Span().AddCss("octicon", "octicon-star") + " Projects must have less than 100 GitHub stars when added")
+                        @Bs.Paragraph(Bs.Icon(Icon.Calendar) + " Projects must have at least 6 months commit history")
+                        @Bs.Paragraph(Bs.Span().AddCss("octicon", "octicon-history") + " Projects must have at least 10 commits")
+                        @Bs.Paragraph(Bs.Span().AddCss("octicon", "octicon-book") + " Projects must have a readme file")
+                        @Bs.Paragraph(Bs.Icon(Icon.Time) + " Listings last for 48 hours")
+                        @Bs.Paragraph(Bs.Icon(Icon.TriangleTop) + " Rankings are based on increase in GitHub stars")
+                    }
+                }
+            }
+            
+            // Repositories
+            using (Bs.Div().AddCss("table-cell", "full-height").SetId("repositories").Begin())
+            {
+                Html.RenderAction(MVC.Default.Ranked());
+            }
+            
+            // Content
+            using (Bs.Div().AddCss("table-cell", "full-height").SetId("content").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
+            {
+                Html.RenderAction(MVC.Default.Add());
+            }
+        }
+    }
+
+    <script>
+        $(document).ready(function () {
+            $(".scroll-wrapper").niceScroll();
+        });
+    </script>
+ </body>
+</html>
