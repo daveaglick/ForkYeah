@@ -60,7 +60,7 @@
                     {                    
                         @Bs.Heading2("Find awesome undiscovered open source projects").AddCss("bottom-margin")
     
-                        @Bs.Button("Add a Project").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("bottom-margin")
+                        @Bs.Button("Add a Project").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button", "bottom-margin")
     
                         using (@Bs.Div().AddCss("bottom-margin").Begin())
                         {
@@ -86,7 +86,7 @@
             // Repositories
             using (Bs.Div().AddCss("table-cell", "full-height").SetId("repositories").Begin())
             {
-                Html.RenderAction(MVC.Default.Ranked());
+                Html.RenderAction(MVC.Default.List());
             }
             
             // Content
@@ -99,7 +99,21 @@
 
     <script>
         $(document).ready(function () {
+            afterLoad();
+        });
+
+        $(document).ajaxSuccess(function () {
+            afterLoad();
+        });
+
+        // Common behavior for document ready and after Ajax calls
+        function afterLoad() {
             $(".scroll-wrapper").niceScroll();
+        }
+
+        $(".add-button").click(function () {
+            var addAction = "@(Url.Action(MVC.Default.Add()))";
+            $("#content").load(addAction);
         });
     </script>
  </body>

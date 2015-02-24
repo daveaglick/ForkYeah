@@ -23,9 +23,20 @@ namespace ForkYeah.Controllers
         {
             return PartialView();
         }
+
+        [HttpPost]
+        [Route("add")]
+        public virtual ActionResult Add(string owner, string name)
+        {
+            if(string.IsNullOrWhiteSpace(owner) || string.IsNullOrWhiteSpace(name))
+            {
+                return Content("A repository owner and name must be provided.");
+            }
+            return Content(string.Empty);
+        }
         
-        [Route("ranked")]
-        public virtual ActionResult Ranked()
+        [Route("list")]
+        public virtual ActionResult List()
         {
             List<RepositoryListItem> repositories = new List<RepositoryListItem>();
             
@@ -44,7 +55,7 @@ namespace ForkYeah.Controllers
                 });
             }
 
-            return PartialView(MVC.Default.Views.ViewNames.Repositories, repositories);
+            return PartialView(repositories);
         }
         
         [Route("{owner}/{name}")]

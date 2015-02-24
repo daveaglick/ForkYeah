@@ -50,6 +50,10 @@ body {
     margin-bottom: 28px;
 }
 
+.padded-top {
+    padding-top: @padding-base-horizontal;
+}
+
 .content-header {
     background-color: @gray-lightest;
     border-bottom: 4px solid @gray-light;
@@ -109,7 +113,7 @@ body {
         padding-left: @padding-base-horizontal;
         padding-right: @padding-base-horizontal;
     }
-
+    
     #intro {
         width: 15%;
         background-color: @brand-primary;
@@ -122,10 +126,6 @@ body {
     
     #repositories {
         width: 25%;
-
-        .scroll-wrapper {
-            padding-top: @line-height-computed;
-        }
     }
     
     #content {

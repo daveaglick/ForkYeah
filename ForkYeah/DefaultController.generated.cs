@@ -82,7 +82,7 @@ namespace ForkYeah.Controllers
         {
             public readonly string Index = "Index";
             public readonly string Add = "Add";
-            public readonly string Ranked = "Ranked";
+            public readonly string List = "List";
             public readonly string Details = "Details";
         }
 
@@ -91,11 +91,20 @@ namespace ForkYeah.Controllers
         {
             public const string Index = "Index";
             public const string Add = "Add";
-            public const string Ranked = "Ranked";
+            public const string List = "List";
             public const string Details = "Details";
         }
 
 
+        static readonly ActionParamsClass_Add s_params_Add = new ActionParamsClass_Add();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Add AddParams { get { return s_params_Add; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Add
+        {
+            public readonly string owner = "owner";
+            public readonly string name = "name";
+        }
         static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Details DetailsParams { get { return s_params_Details; } }
@@ -118,12 +127,12 @@ namespace ForkYeah.Controllers
                 public readonly string Add = "Add";
                 public readonly string Details = "Details";
                 public readonly string Index = "Index";
-                public readonly string Repositories = "Repositories";
+                public readonly string List = "List";
             }
             public readonly string Add = "~/Views/Default/Add.cshtml";
             public readonly string Details = "~/Views/Default/Details.cshtml";
             public readonly string Index = "~/Views/Default/Index.cshtml";
-            public readonly string Repositories = "~/Views/Default/Repositories.cshtml";
+            public readonly string List = "~/Views/Default/List.cshtml";
         }
     }
 
@@ -155,13 +164,26 @@ namespace ForkYeah.Controllers
         }
 
         [NonAction]
-        partial void RankedOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string owner, string name);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Ranked()
+        public override System.Web.Mvc.ActionResult Add(string owner, string name)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Ranked);
-            RankedOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "owner", owner);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
+            AddOverride(callInfo, owner, name);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult List()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.List);
+            ListOverride(callInfo);
             return callInfo;
         }
 

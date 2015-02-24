@@ -13,13 +13,22 @@ namespace ForkYeah.Data.Migrations
                     {
                         Owner = c.String(nullable: false, maxLength: 128),
                         Name = c.String(nullable: false, maxLength: 128),
-                        OwnerHtmlUrl = c.String(nullable: false),
+                        DbAdded = c.DateTimeOffset(nullable: false, precision: 7),
+                        OriginialStargazersCount = c.Int(nullable: false),
                         Description = c.String(nullable: false),
                         HtmlUrl = c.String(nullable: false),
+                        Homepage = c.String(),
+                        Language = c.String(),
                         StargazersCount = c.Int(nullable: false),
-                        StargazersIncrease = c.Int(nullable: false),
-                        Added = c.DateTime(nullable: false),
-                        Updated = c.DateTime(nullable: false),
+                        OpenIssuesCount = c.Int(nullable: false),
+                        CreatedAt = c.DateTimeOffset(precision: 7),
+                        PushedAt = c.DateTimeOffset(precision: 7),
+                        UpdatedAt = c.DateTimeOffset(precision: 7),
+                        DbUpdated = c.DateTimeOffset(nullable: false, precision: 7),
+                        ReadmeHtml = c.String(),
+                        Contributors = c.Int(nullable: false),
+                        Commits = c.Int(nullable: false),
+                        DbDetailsUpdated = c.DateTimeOffset(nullable: false, precision: 7),
                     })
                 .PrimaryKey(t => new { t.Owner, t.Name });
             

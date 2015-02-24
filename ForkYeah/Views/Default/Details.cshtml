@@ -24,17 +24,20 @@
         {
             using (Bs.Div().AddCss("table", "full-height").Begin())
             {
-                using (Bs.Div().AddCss("table-row", "full-height").SetVisibility(Visibility.Hidden).Begin())
+                using (Bs.Div().AddCss("table-row", "full-height").Begin())
                 {
                     using (Bs.Div().AddCss("table-cell", "full-height", "readme").Begin())
                     {
                         using (Bs.Div().AddCss("relative-wrapper").Begin())
                         {
                             using (Bs.Div().AddCss("scroll-wrapper").Begin())
-                            {
-                                for (int c = 0; c < 100; c++)
+                            {                                
+                                using(Bs.Div().AddCss("padded-top").Begin())
                                 {
-                                    @Bs.Paragraph("readme, readme, readme, " + c)
+                                    for (int c = 0; c < 100; c++)
+                                    {
+                                        @Bs.Paragraph("readme, readme, readme, " + c)
+                                    }
                                 }
                             }
                         }
@@ -44,10 +47,13 @@
                         using (Bs.Div().AddCss("relative-wrapper").Begin())
                         {
                             using (Bs.Div().AddCss("scroll-wrapper").Begin())
-                            {
-                                for (int c = 0; c < 100; c++)
+                            {                          
+                                using(Bs.Div().AddCss("padded-top").Begin())
                                 {
-                                    @Bs.Paragraph("comments, comments, comments, " + c)
+                                    for (int c = 0; c < 100; c++)
+                                    {
+                                        @Bs.Paragraph("comments, comments, comments, " + c)
+                                    }
                                 }
                             }
                         }

@@ -14,7 +14,41 @@
     {
         using (Bs.Div().AddCss("table-cell", "full-height").Begin())
         {
-            <p>Add</p>
+            using (Bs.Div().AddCss("relative-wrapper").Begin())
+            {
+                using (Bs.Div().AddCss("scroll-wrapper").Begin())
+                {                    
+                    using(Bs.Div().AddCss("padded-top").Begin())
+                    {
+                        using (Bs.Form().SetId("add-form").AddCss("bottom-margin").SetInline().Begin())
+                        {
+                            <text>
+                                @Bs.Input(MVC.Default.AddParams.owner).SetPlaceholder("owner") / @Bs.Input(MVC.Default.AddParams.name).SetPlaceholder("name") @Bs.Submit("Add")
+                            </text>
+                        }
+                        @Bs.Alert(AlertState.Danger).SetId("add-form-error").SetVisibility(Visibility.Hidden)
+                        @Bs.Alert(AlertState.Success, "Thank you for your submission! It should appear in the list soon.").SetId("add-form-success").SetVisibility(Visibility.Hidden)
+                    }
+                }
+            }
         }
     }
 }
+
+<script>
+    $(document).ready(function () {
+        $("#add-form").submit(function () {
+            $.post("@(Url.Action(MVC.Default.Add()))", $(this).serialize(), function (result) {
+                if (result !== "") {
+                    $("#add-form-error").text(result);
+                    $("#add-form-error").removeClass("@(Css.Hidden)")
+                } else {
+                    $("#add-form").addClass("@(Css.Hidden)")
+                    $("#add-form-error").addClass("@(Css.Hidden)")
+                    $("#add-form-success").removeClass("@(Css.Hidden)")
+                }
+            });
+            return false;
+        });
+    });
+</script>
