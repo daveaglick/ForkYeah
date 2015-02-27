@@ -16,6 +16,7 @@ namespace ForkYeah.Data.Migrations
                         DbAdded = c.DateTimeOffset(nullable: false, precision: 7),
                         OriginialStargazersCount = c.Int(nullable: false),
                         Description = c.String(nullable: false),
+                        OwnerHtmlUrl = c.String(nullable: false),
                         HtmlUrl = c.String(nullable: false),
                         Homepage = c.String(),
                         Language = c.String(),

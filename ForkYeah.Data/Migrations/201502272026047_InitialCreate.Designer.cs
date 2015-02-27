@@ -13,7 +13,7 @@ namespace ForkYeah.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201502271945373_InitialCreate"; }
+            get { return "201502272026047_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

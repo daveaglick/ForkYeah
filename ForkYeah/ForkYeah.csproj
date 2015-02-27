@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\github-markdown.css" />
     <Content Include="Content\octicons\LICENSE.txt" />
     <Content Include="Content\octicons\octicons.css" />
     <Content Include="Content\octicons\octicons.svg" />
@@ -236,6 +237,7 @@
     </Compile>
     <Compile Include="Models\Default\RepositoryDetails.cs" />
     <Compile Include="Models\Default\RepositoryListItem.cs" />
+    <Compile Include="NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="T4MVC.cs">
       <AutoGen>True</AutoGen>

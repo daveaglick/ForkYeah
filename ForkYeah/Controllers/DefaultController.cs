@@ -10,6 +10,7 @@ using Octokit;
 
 namespace ForkYeah.Controllers
 {
+    [NoCache]
     public partial class DefaultController : Controller
     {
         private ForkYeahContext _db = new ForkYeahContext();
@@ -115,6 +116,7 @@ namespace ForkYeah.Controllers
                 DbAdded = DateTimeOffset.Now,
                 OriginialStargazersCount = repository.StargazersCount,
                 Description = repository.Description,
+                OwnerHtmlUrl = repository.Owner.HtmlUrl,
                 HtmlUrl = repository.HtmlUrl,
                 Homepage = repository.Homepage,
                 Language = repository.Language,
@@ -160,7 +162,30 @@ namespace ForkYeah.Controllers
         [Route("{owner}/{name}")]
         public virtual ActionResult Details(string owner, string name)
         {
-            return PartialView();
+            Data.Repository repository = _db.Repositories.FirstOrDefault(x => x.Owner == owner && x.Name == name);
+            if (repository == null)
+            {
+                // TODO: How to return an error page? Can we return HttpNotFound?
+            }
+
+            return PartialView(new RepositoryDetails()
+            {
+                Owner = repository.Owner,
+                Name = repository.Name,
+                DbAdded = repository.DbAdded,
+                Description = repository.Description,
+                OwnerHtmlUrl = repository.OwnerHtmlUrl,
+                HtmlUrl = repository.HtmlUrl,
+                Homepage = repository.Homepage,
+                Language = repository.Language,
+                StargazersCount = repository.StargazersCount,
+                StargazersCountChange = repository.StargazersCountChange,
+                ForksCount = repository.ForksCount,
+                OpenIssuesCount = repository.OpenIssuesCount,
+                ReadmeHtml = repository.ReadmeHtml,
+                ContributorCount = repository.ContributorCount,
+                CommitCount = repository.CommitCount
+            });
         }
     }
 }

@@ -9,12 +9,34 @@
         using (Bs.Div().AddCss("table-cell").Begin())
         {
             using (Bs.Div().AddCss("content-header").Begin())
-            {                
-                @Bs.Heading2("FluentBootstrap").SetSmallText("somedave / FluentBootstrap ")
-                @Bs.Div().AddChild(x => Bs.Strong(Bs.Badge("C#").ToString() + " "
-                    + Bs.Span().AddCss("octicon", "octicon-history") + " 194 Commits / "
-                    + Bs.Span().AddCss("octicon", "octicon-organization") + " 2 Contributors / "
-                    + Bs.Span().AddCss("octicon", "octicon-issue-opened") + " 16 Issues / Added: January 4, 2015"))
+            {
+                using (Bs.Heading2(Model.Name).Begin())
+                {
+                    using(Bs.Small().Begin())
+                    {
+                        <text>@Bs.Link(Model.Owner, Model.OwnerHtmlUrl)/@Bs.Link(Model.Name, Model.HtmlUrl)</text>
+                        if(!string.IsNullOrWhiteSpace(Model.Homepage))
+                        {
+                            <text> (@Bs.Link(Model.Homepage, Model.Homepage))</text>
+                        }
+                    }
+                }
+                using(Bs.Paragraph().Begin())
+                {
+                    <text>
+                        @if(!string.IsNullOrWhiteSpace(Model.Language))
+                        {
+                            @Bs.Strong(Bs.Badge(Model.Language).ToString())
+                        }
+                        @Bs.Span().AddCss("octicon", "octicon-star") @Model.StargazersCount (+@Model.StargazersCountChange.ToString("+0;-0;0")) /
+                        @Bs.Span().AddCss("octicon", "octicon-repo-forked") @Model.ForksCount Forks /
+                        @Bs.Span().AddCss("octicon", "octicon-history") @Model.CommitCount Commits / 
+                        @Bs.Span().AddCss("octicon", "octicon-organization") @Model.ContributorCount Contributors /
+                        @Bs.Span().AddCss("octicon", "octicon-issue-opened") @Model.OpenIssuesCount Issues /
+                        Added @Model.DbAdded.ToString("d")
+                    </text>
+                }
+                @Bs.Paragraph(@Bs.Strong(Model.Description).ToString())
             }
         }
     }
@@ -36,7 +58,7 @@
                                 {
                                     for (int c = 0; c < 100; c++)
                                     {
-                                        @Bs.Paragraph("comments, comments, comments, " + c)
+                                        @Bs.Paragraph("comments, comments, comments... " + c)
                                     }
                                 }
                             }
@@ -50,10 +72,7 @@
                             {
                                 using (Bs.Div().AddCss("padded-top").Begin())
                                 {
-                                    for (int c = 0; c < 100; c++)
-                                    {
-                                        @Bs.Paragraph("readme, readme, readme, " + c)
-                                    }
+                                    @Html.Raw(Model.ReadmeHtml)
                                 }
                             }
                         }

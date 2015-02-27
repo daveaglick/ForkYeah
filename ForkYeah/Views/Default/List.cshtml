@@ -26,7 +26,7 @@
                         using (Bs.Heading3().Begin())
                         {
                             // TODO: Link this to the repo partial
-                            @Bs.Link("FluentBootstrap").AddCss("repository-link").AddAttribute("data-owner", repo.Owner).AddAttribute("data-name", repo.Name)
+                            @Bs.Link(repo.Name).AddCss("repository-link").AddAttribute("data-owner", repo.Owner).AddAttribute("data-name", repo.Name)
                             @Bs.Small(Bs.Icon(Icon.Comment).ToString() + " 4")
                         }
                                 

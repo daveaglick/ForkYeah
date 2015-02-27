@@ -26,6 +26,9 @@ namespace ForkYeah.Data
 
         [Required]
         public string Description { get; set; }
+
+        [Required]
+        public string OwnerHtmlUrl { get; set; }
         
         [Required]
         public string HtmlUrl { get; set; }
@@ -46,8 +49,7 @@ namespace ForkYeah.Data
 
         public DateTimeOffset UpdatedAt { get; set; }   // This can be checked to see if new details are needed
 
-        public DateTimeOffset? PushedAt { get; set; }
-        
+        public DateTimeOffset? PushedAt { get; set; }        
 
         public DateTimeOffset DbUpdated { get; set; }
 

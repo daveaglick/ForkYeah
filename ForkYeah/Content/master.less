@@ -136,10 +136,21 @@ body {
 
     .readme {        
         width: 50%;
+
     }
 
     .comments {
         width: 50%;
         border-right: 1px solid @gray-lighter;
+    }
+
+    /* Overrides for github-markdown.css */
+    .markdown-body {
+        font-family: @font-family-base;
+        color: @text-color;
+
+        & h1, & h2, & h3, & h4, & h5, & h6 {
+            color: @gray-darkest;
+        }
     }
 }

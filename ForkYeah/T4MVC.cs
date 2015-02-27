@@ -178,6 +178,8 @@ namespace Links
             public static readonly string glyphicons_halflings_regular_woff2 = Url("glyphicons-halflings-regular.woff2");
         }
     
+        public static readonly string github_markdown_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/github-markdown.min.css") ? Url("github-markdown.min.css") : Url("github-markdown.css");
+             
         public static readonly string master_less = Url("master.less");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class octicons {
@@ -244,6 +246,7 @@ namespace Links
             }
             public static class Assets
             {
+                public const string github_markdown_css = "~/Content/github-markdown.css";
             }
         }
     }
