@@ -17,7 +17,7 @@
                         using (Bs.ButtonGroup().SetVertical().Begin())
                         {
                             // TODO: Add tooltips
-                            @Bs.LinkButton(repo.StargazersIncrease.ToString(), repo.HtmlUrl).SetIcon(Icon.TriangleTop).SetState(ButtonState.Primary)
+                            @Bs.LinkButton(repo.StargazersCountChange.ToString(), repo.HtmlUrl).SetIcon(Icon.TriangleTop).SetState(ButtonState.Primary)
                             @Bs.LinkButton(Bs.Span().AddCss("octicon", "octicon-mark-github") + " " + repo.StargazersCount.ToString(), repo.HtmlUrl)
                         }
                     }

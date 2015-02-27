@@ -13,6 +13,6 @@ namespace ForkYeah.Models.Default
         public string Language { get; set; }
         public string HtmlUrl { get; set; }
         public int StargazersCount { get; set; }        
-        public int StargazersIncrease { get; set; }
+        public int StargazersCountChange { get; set; }
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
-    <title>Fork Yeah!@(string.IsNullOrWhiteSpace(Title) ? string.Empty : " - " + Title)</title>
+    <title>Fork Yeah!</title>
     <meta name="description" content="Find undiscovered open source projects." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -15,16 +15,6 @@
     <link href="@Links.Content.bootstrap.theme_less" rel="stylesheet" />
     <link href="@Links.Content.octicons.octicons_css" rel="stylesheet">
     <link href="@Links.Content.master_less" rel="stylesheet">
-
-    <meta name="application-name" content="Fork Yeah!" />
-    <meta name="msapplication-tooltip" content="Fork Yeah!" />
-    <meta name="msapplication-starturl" content="/" />
-
-    <meta property="og:title" content="Fork Yeah!@(string.IsNullOrWhiteSpace(Title) ? string.Empty : " - " + Title)" />
-    @* <meta property="og:image" content="@Blog.Image" /> *@
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="@(Request.Url.Scheme +"://" + Request.Url.Authority + Request.RawUrl)" />
-    <!-- TODO: More social graph meta tags -->
 
     <script src="@Links.Scripts.jquery_2_1_3_min_js"></script>
     <script src="@Links.Scripts.bootstrap_min_js"></script>
@@ -75,7 +65,7 @@
             }
             
             // Repositories
-            using (Bs.Div().AddCss("table-cell", "full-height").SetId("repositories").Begin())
+            using (Bs.Div().AddCss("table-cell", "full-height").SetId("list").Begin())
             {
                 Html.RenderAction(MVC.Default.List());
             }

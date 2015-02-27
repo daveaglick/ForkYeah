@@ -225,6 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AsyncHelper.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="DefaultController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>

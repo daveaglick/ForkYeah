@@ -9,7 +9,7 @@ namespace ForkYeah.Data
 {
     public class ForkYeahContext : DbContext
     {    
-        public ForkYeahContext() : base("ForkYeahConntextionString")
+        public ForkYeahContext() : base("ForkYeahConnectionString")
         {
         }
         

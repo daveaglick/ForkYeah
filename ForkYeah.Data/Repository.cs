@@ -34,21 +34,20 @@ namespace ForkYeah.Data
 
         public string Language { get; set; }
         
-        public int StargazersCount { get; set; }        
+        public int StargazersCount { get; set; }
 
-        [NotMapped]
-        public int StargazersCountChange
-        {
-            get { return StargazersCount - OriginialStargazersCount; }
-        }
+        public int StargazersCountChange { get; set; }  // This is duplicative of OriginialStargazersCount and StargazersCount, but since we want to sort by it...
+
+        public int ForksCount { get; set; }
 
         public int OpenIssuesCount { get; set; }
         
-        public DateTimeOffset? CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+
+        public DateTimeOffset UpdatedAt { get; set; }   // This can be checked to see if new details are needed
 
         public DateTimeOffset? PushedAt { get; set; }
         
-        public DateTimeOffset? UpdatedAt { get; set; }
 
         public DateTimeOffset DbUpdated { get; set; }
 
@@ -56,9 +55,9 @@ namespace ForkYeah.Data
 
         public string ReadmeHtml { get; set; }
 
-        public int Contributors { get; set; }
+        public int ContributorCount { get; set; }
 
-        public int Commits { get; set; }  // Use the contributors endpoint and sum all contributor commits
+        public int CommitCount { get; set; }  // Use the contributors endpoint and sum all contributor commits
 
         public DateTimeOffset DbDetailsUpdated { get; set; }
     }

@@ -27,7 +27,7 @@
                             </text>
                         }
                         @Bs.Alert(AlertState.Danger).SetId("add-form-error").SetVisibility(Visibility.Hidden)
-                        @Bs.Alert(AlertState.Success, "Thank you for your submission! It should appear in the list soon.").SetId("add-form-success").SetVisibility(Visibility.Hidden)
+                        @Bs.Alert(AlertState.Success, "Thank you for your submission! It should appear in the list right away.").SetId("add-form-success").SetVisibility(Visibility.Hidden)
 
                         <hr />
                         @Bs.Paragraph("Here's how we help maintain the quality of projects listed on the site while focusing on those that haven't gotten the attention they deserve:")
@@ -49,12 +49,17 @@
         $("#add-form").submit(function () {
             $.post("@(Url.Action(MVC.Default.Add()))", $(this).serialize(), function (result) {
                 if (result !== "") {
+                    // Error
                     $("#add-form-error").text(result);
                     $("#add-form-error").removeClass("@(Css.Hidden)")
                 } else {
+                    // Success
                     $("#add-form").addClass("@(Css.Hidden)")
                     $("#add-form-error").addClass("@(Css.Hidden)")
                     $("#add-form-success").removeClass("@(Css.Hidden)")
+
+                    var listAction = "@(Url.Action(MVC.Default.List()))";
+                    $("#list").load(listAction); // Reload the list
                 }
             });
             return false;
