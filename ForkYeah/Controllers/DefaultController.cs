@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ForkYeah.Data;
@@ -8,25 +9,25 @@ using ForkYeah.Models.Default;
 
 namespace ForkYeah.Controllers
 {
-    public partial class DefaultController : Controller
+    public partial class DefaultController : AsyncController
     {
         private ForkYeahContext _db = new ForkYeahContext();
 
         [Route("")]
-        public virtual ActionResult Index()
+        public virtual async Task<ActionResult> Index()
         {
             return View();
         }
         
         [Route("add")]
-        public virtual ActionResult Add()
+        public virtual async Task<ActionResult> Add()
         {
             return PartialView();
         }
 
         [HttpPost]
         [Route("add")]
-        public virtual ActionResult Add(string owner, string name)
+        public virtual async Task<ActionResult> Add(string owner, string name)
         {
             if(string.IsNullOrWhiteSpace(owner) || string.IsNullOrWhiteSpace(name))
             {
@@ -36,7 +37,7 @@ namespace ForkYeah.Controllers
         }
         
         [Route("list")]
-        public virtual ActionResult List()
+        public virtual async Task<ActionResult> List()
         {
             List<RepositoryListItem> repositories = new List<RepositoryListItem>();
             
@@ -59,7 +60,7 @@ namespace ForkYeah.Controllers
         }
         
         [Route("{owner}/{name}")]
-        public virtual ActionResult Details(string owner, string name)
+        public virtual async Task<ActionResult> Details(string owner, string name)
         {
             return PartialView();
         }

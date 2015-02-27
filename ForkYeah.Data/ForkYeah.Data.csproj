@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncHelper.cs" />
     <Compile Include="ForkYeahContext.cs" />
     <Compile Include="Migrations\201502242204005_InitialCreate.cs" />
     <Compile Include="Migrations\201502242204005_InitialCreate.Designer.cs">
