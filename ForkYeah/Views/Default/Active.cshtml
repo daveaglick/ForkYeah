@@ -1,0 +1,36 @@
+﻿@using ForkYeah.Models.Default;
+
+@model IEnumerable<RepositoryListItem>
+
+@using (Bs.Div().AddCss("relative-wrapper").Begin())
+{
+    using (Bs.Div().AddCss("scroll-wrapper").Begin())
+    {
+        using (Bs.Div().AddCss("padded-top").Begin())
+        {
+            foreach (RepositoryListItem repo in Model)
+            {
+                Html.RenderPartial(MVC.Default.Views.ViewNames._Repository, repo);
+                @Bs.Element("hr")
+            }
+            using (var pager = Bs.Pager().Begin())
+            {
+                @pager.Page("Archive").SetId("archive-page")
+            }
+        }
+    }
+}
+
+<script>
+    $( ".repository-link" ).click(function() {
+        var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
+        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
+        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
+        $("#content").load(detailsAction);
+    });
+
+    $("#archive-page").click(function () {
+        var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
+        $("#list").load(archiveAction);
+    });
+</script>

@@ -10,9 +10,14 @@ body {
 }
 
 .add-button {
-    margin-left: @padding-base-horizontal;
     margin-right: @padding-base-horizontal;
     font-weight: bold;
+}
+
+#intro {
+    & h4, & h4 a, & h4 a:active, & h4 a:visited, & h4 a:hover {
+        color: white;
+    }
 }
 
 #list {
@@ -52,6 +57,10 @@ body {
 
 .padded-top {
     padding-top: @padding-base-horizontal;
+}
+
+.text-align-right {
+    text-align: right;
 }
 
 .content-header {
@@ -150,6 +159,7 @@ body {
         color: @text-color;
 
         & h1, & h2, & h3, & h4, & h5, & h6 {
+            font-family: @headings-font-family;
             color: @gray-darkest;
         }
     }

@@ -53,11 +53,21 @@
                         @Bs.Heading2("Find awesome undiscovered open source projects").AddCss("bottom-margin")
     
                         @Bs.Button("Add a Project").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button", "bottom-margin")
-    
+
+                        @Bs.Element("hr")
+
+                        @Bs.Heading4(Bs.Link("Currently Active " + Bs.Icon(Icon.TriangleRight).ToString()).SetId("active-link").ToString()).AddCss("text-align-right")
+                        @Bs.Paragraph("Vote for your favorites by visiting their GitHub profile and staring the repo!")
+
+                        @Bs.Heading4(Bs.Link("Archive " + Bs.Icon(Icon.TriangleRight).ToString()).SetId("archive-link").ToString()).AddCss("text-align-right")
+                        @Bs.Paragraph("Just because the voting is over doesn't mean these projects don't still rock.")
+
+                        @Bs.Element("hr")
+
                         using (@Bs.Div().AddCss("bottom-margin").Begin())
                         {
                             @Bs.Paragraph("Filter by language:")
-                            using(Bs.Heading4().Begin())
+                            using (Bs.Heading4().AddCss("text-align-right").Begin())
                             {
                                 @Bs.Badge("C#") @Bs.Badge("Java") @Bs.Badge("JavaScript") @Bs.Badge("Ruby")
                             }
@@ -69,7 +79,7 @@
             // Repositories
             using (Bs.Div().AddCss("table-cell", "full-height").SetId("list").Begin())
             {
-                Html.RenderAction(MVC.Default.List());
+                Html.RenderAction(MVC.Default.Active());
             }
             
             // Content
@@ -97,6 +107,16 @@
         $(".add-button").click(function () {
             var addAction = "@(Url.Action(MVC.Default.Add()))";
             $("#content").load(addAction);
+        });
+
+        $("#active-link").click(function () {
+            var activeAction = "@(Url.Action(MVC.Default.Active()))";
+            $("#list").load(activeAction);
+        });
+
+        $("#archive-link").click(function () {
+            var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
+            $("#list").load(archiveAction);
         });
     </script>
  </body>

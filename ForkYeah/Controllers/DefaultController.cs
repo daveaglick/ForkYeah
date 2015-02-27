@@ -139,8 +139,8 @@ namespace ForkYeah.Controllers
             return Content(string.Empty);
         }
         
-        [Route("list")]
-        public virtual ActionResult List()
+        [Route("active")]
+        public virtual ActionResult Active()
         {
             DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-48);
             IEnumerable<RepositoryListItem> repositories = _db.Repositories
@@ -148,6 +148,7 @@ namespace ForkYeah.Controllers
                 .OrderByDescending(x => x.StargazersCountChange)
                 .Select(x => new RepositoryListItem
                 {
+                    DbAdded = x.DbAdded,
                     Owner = x.Owner,
                     Name = x.Name,
                     Description = x.Description,
@@ -156,7 +157,30 @@ namespace ForkYeah.Controllers
                     StargazersCount = x.StargazersCount,
                     StargazersCountChange = x.StargazersCountChange
                 });
+
             return PartialView(repositories);
+        }
+
+        [Route("archive")]
+        public virtual ActionResult Archive(int skip = 0)
+        {
+            DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-48);
+            IEnumerable<RepositoryListItem> repositories = _db.Repositories
+                //.Where(x => x.DbAdded < twoDaysAgo) // TODO: Uncomment
+                .OrderByDescending(x => x.DbAdded)
+                .Select(x => new RepositoryListItem
+                {
+                    DbAdded = x.DbAdded,
+                    Owner = x.Owner,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Language = x.Language,
+                    HtmlUrl = x.HtmlUrl,
+                    StargazersCount = x.StargazersCount,
+                    StargazersCountChange = x.StargazersCountChange
+                });
+
+            return PartialView(repositories.Skip(skip).Take(2));
         }
 
         [Route("{owner}/{name}")]

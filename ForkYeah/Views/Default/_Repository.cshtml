@@ -1,0 +1,27 @@
+﻿@using ForkYeah.Models.Default;
+
+@model RepositoryListItem
+
+@using (Bs.Div().AddCss("repository").Begin())
+{
+    using (Bs.Div().AddCss("repository-button").Begin())
+    {
+        using (Bs.ButtonGroup().SetVertical().Begin())
+        {
+            // TODO: Add tooltips
+            @Bs.LinkButton(Model.StargazersCountChange.ToString(), Model.HtmlUrl).SetIcon(Icon.TriangleTop).SetState(ButtonState.Primary)
+            @Bs.LinkButton(Bs.Span().AddCss("octicon", "octicon-mark-github") + " " + Model.StargazersCount.ToString(), Model.HtmlUrl)
+        }
+    }
+    using (Bs.Div().AddCss("repository-description").Begin())
+    {
+        using (Bs.Heading3().Begin())
+        {
+            @Bs.Link(Model.Name).AddCss("repository-link").AddAttribute("data-owner", Model.Owner).AddAttribute("data-name", Model.Name)
+            @Bs.Small(Bs.Icon(Icon.Comment).ToString() + " 4 Comments")  // TODO: Integrate Disqus count
+        }
+                                
+        // TODO: Link this to a filter for the language
+        @Bs.Paragraph(Bs.Badge(Model.Language).ToString() + " " + Model.Description)
+    }
+}

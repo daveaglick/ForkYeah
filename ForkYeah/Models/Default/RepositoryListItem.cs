@@ -7,6 +7,7 @@ namespace ForkYeah.Models.Default
 {
     public class RepositoryListItem
     {
+        public DateTimeOffset DbAdded { get; set; }
         public string Owner { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

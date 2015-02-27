@@ -82,7 +82,8 @@ namespace ForkYeah.Controllers
         {
             public readonly string Index = "Index";
             public readonly string Add = "Add";
-            public readonly string List = "List";
+            public readonly string Active = "Active";
+            public readonly string Archive = "Archive";
             public readonly string Details = "Details";
         }
 
@@ -91,7 +92,8 @@ namespace ForkYeah.Controllers
         {
             public const string Index = "Index";
             public const string Add = "Add";
-            public const string List = "List";
+            public const string Active = "Active";
+            public const string Archive = "Archive";
             public const string Details = "Details";
         }
 
@@ -104,6 +106,14 @@ namespace ForkYeah.Controllers
         {
             public readonly string owner = "owner";
             public readonly string name = "name";
+        }
+        static readonly ActionParamsClass_Archive s_params_Archive = new ActionParamsClass_Archive();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Archive ArchiveParams { get { return s_params_Archive; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Archive
+        {
+            public readonly string skip = "skip";
         }
         static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -124,15 +134,19 @@ namespace ForkYeah.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _Repository = "_Repository";
+                public readonly string Active = "Active";
                 public readonly string Add = "Add";
+                public readonly string Archive = "Archive";
                 public readonly string Details = "Details";
                 public readonly string Index = "Index";
-                public readonly string List = "List";
             }
+            public readonly string _Repository = "~/Views/Default/_Repository.cshtml";
+            public readonly string Active = "~/Views/Default/Active.cshtml";
             public readonly string Add = "~/Views/Default/Add.cshtml";
+            public readonly string Archive = "~/Views/Default/Archive.cshtml";
             public readonly string Details = "~/Views/Default/Details.cshtml";
             public readonly string Index = "~/Views/Default/Index.cshtml";
-            public readonly string List = "~/Views/Default/List.cshtml";
         }
     }
 
@@ -177,13 +191,25 @@ namespace ForkYeah.Controllers
         }
 
         [NonAction]
-        partial void ListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ActiveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult List()
+        public override System.Web.Mvc.ActionResult Active()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.List);
-            ListOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Active);
+            ActiveOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ArchiveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int skip);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Archive(int skip)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Archive);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "skip", skip);
+            ArchiveOverride(callInfo, skip);
             return callInfo;
         }
 

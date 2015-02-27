@@ -252,7 +252,9 @@
     <Content Include="packages.config" />
     <Content Include="Views\Default\Add.cshtml" />
     <Content Include="Views\Default\Details.cshtml" />
-    <Content Include="Views\Default\List.cshtml" />
+    <Content Include="Views\Default\Active.cshtml" />
+    <Content Include="Views\Default\Archive.cshtml" />
+    <Content Include="Views\Default\_Repository.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

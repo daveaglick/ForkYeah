@@ -1,0 +1,39 @@
+﻿@using ForkYeah.Models.Default;
+
+@model IEnumerable<RepositoryListItem>
+
+@using (Bs.Div().AddCss("relative-wrapper").Begin())
+{
+    using (Bs.Div().AddCss("scroll-wrapper").Begin())
+    {
+        using(Bs.Div().AddCss("padded-top").Begin())
+        {
+            DateTime date = DateTime.MinValue;
+            foreach(RepositoryListItem repo in Model)
+            {
+                if(repo.DbAdded.Date != date)
+                {
+                    date = repo.DbAdded.Date;
+                    @Bs.Heading4(date.ToString("D"))
+                    @Bs.Element("hr")
+                }
+                Html.RenderPartial(MVC.Default.Views.ViewNames._Repository, repo);
+                @Bs.Element("hr")
+            }
+            using (var pager = Bs.Pager().Begin())
+            {
+                @pager.Page("Newer").SetAlignment(PageAlignment.Previous).SetDisabled().SetId("newer-page")
+                @pager.Page("Older").SetAlignment(PageAlignment.Next).SetId("older-page")
+            }
+        }
+    }
+}
+
+<script>
+    $( ".repository-link" ).click(function() {
+        var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
+        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
+        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
+        $("#content").load(detailsAction);
+    });
+</script>

@@ -58,7 +58,7 @@
                     $("#add-form-error").addClass("@(Css.Hidden)")
                     $("#add-form-success").removeClass("@(Css.Hidden)")
 
-                    var listAction = "@(Url.Action(MVC.Default.List()))";
+                    var listAction = "@(Url.Action(MVC.Default.Active()))";
                     $("#list").load(listAction); // Reload the list
                 }
             });
