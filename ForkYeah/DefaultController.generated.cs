@@ -113,7 +113,7 @@ namespace ForkYeah.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Archive
         {
-            public readonly string skip = "skip";
+            public readonly string page = "page";
         }
         static readonly ActionParamsClass_Details s_params_Details = new ActionParamsClass_Details();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -202,14 +202,14 @@ namespace ForkYeah.Controllers
         }
 
         [NonAction]
-        partial void ArchiveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int skip);
+        partial void ArchiveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int page);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Archive(int skip)
+        public override System.Web.Mvc.ActionResult Archive(int page)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Archive);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "skip", skip);
-            ArchiveOverride(callInfo, skip);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "page", page);
+            ArchiveOverride(callInfo, page);
             return callInfo;
         }
 

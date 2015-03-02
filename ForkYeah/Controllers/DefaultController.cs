@@ -142,7 +142,7 @@ namespace ForkYeah.Controllers
         [Route("active")]
         public virtual ActionResult Active()
         {
-            DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-48);
+            DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-96);
             IEnumerable<RepositoryListItem> repositories = _db.Repositories
                 .Where(x => x.DbAdded >= twoDaysAgo)
                 .OrderByDescending(x => x.StargazersCountChange)
@@ -162,11 +162,12 @@ namespace ForkYeah.Controllers
         }
 
         [Route("archive")]
-        public virtual ActionResult Archive(int skip = 0)
+        public virtual ActionResult Archive(int page = 0)
         {
-            DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-48);
+            int pageSize = 2;
+            DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-96);
             IEnumerable<RepositoryListItem> repositories = _db.Repositories
-                //.Where(x => x.DbAdded < twoDaysAgo) // TODO: Uncomment
+                .Where(x => x.DbAdded < twoDaysAgo) // TODO: Uncomment
                 .OrderByDescending(x => x.DbAdded)
                 .Select(x => new RepositoryListItem
                 {
@@ -178,9 +179,16 @@ namespace ForkYeah.Controllers
                     HtmlUrl = x.HtmlUrl,
                     StargazersCount = x.StargazersCount,
                     StargazersCountChange = x.StargazersCountChange
-                });
+                })
+                .Skip(page * pageSize)
+                .Take(pageSize);
 
-            return PartialView(repositories.Skip(skip).Take(2));
+            return PartialView(new Archive()
+            {
+                ListItems = repositories,
+                NewerPage = page != 0 ? page - 1 : (int?)null,
+                OlderPage = repositories.Count() == pageSize ? page + 1 : (int?)null
+            });
         }
 
         [Route("{owner}/{name}")]

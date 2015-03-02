@@ -1,6 +1,6 @@
 ﻿@using ForkYeah.Models.Default;
 
-@model IEnumerable<RepositoryListItem>
+@model Archive
 
 @using (Bs.Div().AddCss("relative-wrapper").Begin())
 {
@@ -9,7 +9,7 @@
         using(Bs.Div().AddCss("padded-top").Begin())
         {
             DateTime date = DateTime.MinValue;
-            foreach(RepositoryListItem repo in Model)
+            foreach(RepositoryListItem repo in Model.ListItems)
             {
                 if(repo.DbAdded.Date != date)
                 {
@@ -22,8 +22,8 @@
             }
             using (var pager = Bs.Pager().Begin())
             {
-                @pager.Page("Newer").SetAlignment(PageAlignment.Previous).SetDisabled().SetId("newer-page")
-                @pager.Page("Older").SetAlignment(PageAlignment.Next).SetId("older-page")
+                @pager.Page("Previous (Newer)").SetAlignment(PageAlignment.Previous).SetDisabled(!Model.NewerPage.HasValue).SetId("newer-page")
+                @pager.Page("Next (Older)").SetAlignment(PageAlignment.Next).SetDisabled(!Model.OlderPage.HasValue).SetId("older-page")
             }
         }
     }
@@ -36,4 +36,24 @@
         detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
         $("#content").load(detailsAction);
     });
+
+    @if(Model.NewerPage.HasValue)
+    {
+        <text>
+            $("#newer-page").click(function () {
+                var archiveAction = "@(Url.Action(MVC.Default.Archive(Model.NewerPage.Value)))";
+                $("#list").load(archiveAction);
+            });
+        </text>
+    }
+
+    @if(Model.OlderPage.HasValue)
+    {
+        <text>
+            $("#older-page").click(function () {
+                var archiveAction = "@(Url.Action(MVC.Default.Archive(Model.OlderPage.Value)))";
+                $("#list").load(archiveAction);
+            });
+        </text>
+    }
 </script>
