@@ -18,7 +18,20 @@ namespace ForkYeah.Controllers
         [Route("")]
         public virtual ActionResult Index()
         {
-            return View();
+            List<KeyValuePair<string, string>> languages = _db.Repositories
+                .Select(x => x.Language)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList()
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => new KeyValuePair<string, string>(x, x))
+                .ToList();
+            languages.Insert(0, new KeyValuePair<string,string>("All Languages", string.Empty));
+
+            return View(new Index
+            {
+                Languages = languages
+            });
         }
 
         [Route("add")]
@@ -142,9 +155,11 @@ namespace ForkYeah.Controllers
         [Route("active")]
         public virtual ActionResult Active()
         {
-            DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-96);
+            string language = GetLanguage();
+            DateTimeOffset activeOffset = DateTimeOffset.Now.AddHours(-96);
             IEnumerable<RepositoryListItem> repositories = _db.Repositories
-                .Where(x => x.DbAdded >= twoDaysAgo)
+                .Where(x => x.DbAdded >= activeOffset)
+                .Where(x => language == null || x.Language == language)
                 .OrderByDescending(x => x.StargazersCountChange)
                 .Select(x => new RepositoryListItem
                 {
@@ -164,10 +179,12 @@ namespace ForkYeah.Controllers
         [Route("archive")]
         public virtual ActionResult Archive(int page = 0)
         {
-            int pageSize = 2;
-            DateTimeOffset twoDaysAgo = DateTimeOffset.Now.AddHours(-96);
+            string language = GetLanguage();
+            int pageSize = 20;
+            DateTimeOffset activeOffset = DateTimeOffset.Now.AddHours(-96);
             IEnumerable<RepositoryListItem> repositories = _db.Repositories
-                .Where(x => x.DbAdded < twoDaysAgo) // TODO: Uncomment
+                .Where(x => x.DbAdded < activeOffset)
+                .Where(x => language == null || x.Language == language)
                 .OrderByDescending(x => x.DbAdded)
                 .Select(x => new RepositoryListItem
                 {
@@ -189,6 +206,16 @@ namespace ForkYeah.Controllers
                 NewerPage = page != 0 ? page - 1 : (int?)null,
                 OlderPage = repositories.Count() == pageSize ? page + 1 : (int?)null
             });
+        }
+
+        private string GetLanguage()
+        {
+            string language = null;
+            if (Request.Cookies.AllKeys.Contains("language"))
+            {
+                language = HttpUtility.UrlDecode(Request.Cookies["language"].Value);
+            }
+            return string.IsNullOrWhiteSpace(language) ? null : language;
         }
 
         [Route("{owner}/{name}")]

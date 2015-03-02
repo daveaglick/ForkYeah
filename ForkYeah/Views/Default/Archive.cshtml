@@ -8,17 +8,25 @@
     {
         using(Bs.Div().AddCss("padded-top").Begin())
         {
-            DateTime date = DateTime.MinValue;
-            foreach(RepositoryListItem repo in Model.ListItems)
+            if(Model.ListItems.Count() == 0)
             {
-                if(repo.DbAdded.Date != date)
+                @Bs.Paragraph("There are currently no archived projects that match your filter.")
+                @Bs.Element("hr")
+            }
+            else
+            {
+                DateTime date = DateTime.MinValue;
+                foreach(RepositoryListItem repo in Model.ListItems)
                 {
-                    date = repo.DbAdded.Date;
-                    @Bs.Heading4(date.ToString("D"))
+                    if(repo.DbAdded.Date != date)
+                    {
+                        date = repo.DbAdded.Date;
+                        @Bs.Heading4(date.ToString("D"))
+                        @Bs.Element("hr")
+                    }
+                    Html.RenderPartial(MVC.Default.Views.ViewNames._Repository, repo);
                     @Bs.Element("hr")
                 }
-                Html.RenderPartial(MVC.Default.Views.ViewNames._Repository, repo);
-                @Bs.Element("hr")
             }
             using (var pager = Bs.Pager().Begin())
             {

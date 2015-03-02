@@ -8,10 +8,19 @@
     {
         using (Bs.Div().AddCss("padded-top").Begin())
         {
-            foreach (RepositoryListItem repo in Model)
+            if(Model.Count() == 0)
             {
-                Html.RenderPartial(MVC.Default.Views.ViewNames._Repository, repo);
+                @Bs.Paragraph("There are currently no active projects that match your filter. Why don't you add one!")
                 @Bs.Element("hr")
+            }
+            else
+            {
+                @Bs.Heading4("Currently Active")
+                foreach (RepositoryListItem repo in Model)
+                {
+                    Html.RenderPartial(MVC.Default.Views.ViewNames._Repository, repo);
+                    @Bs.Element("hr")
+                }
             }
             using (var pager = Bs.Pager().Begin())
             {
