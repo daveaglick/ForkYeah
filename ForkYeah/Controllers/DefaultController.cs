@@ -238,7 +238,7 @@ namespace ForkYeah.Controllers
             Data.Repository repository = _db.Repositories.FirstOrDefault(x => x.Owner == owner && x.Name == name);
             if (repository == null)
             {
-                // TODO: How to return an error page? Can we return HttpNotFound?
+                return HttpNotFound();
             }
 
             return PartialView(new RepositoryDetails()

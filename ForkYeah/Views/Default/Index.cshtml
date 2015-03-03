@@ -110,6 +110,10 @@
             history.pushState({}, null, document.location.pathname);
         });
 
+        $(document).ajaxSend(function () {
+            document.title = 'Fork Yeah!';
+        });
+
         $(document).ajaxSuccess(function () {
             afterSuccess();
         });
