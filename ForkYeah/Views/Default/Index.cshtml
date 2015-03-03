@@ -112,10 +112,16 @@
 
         $(document).ajaxSend(function () {
             document.title = 'Fork Yeah!';
+            hideContent();
         });
 
         $(document).ajaxSuccess(function () {
             afterSuccess();
+
+            // Make sure we hide the content for root requests (since the content view will show it when loaded)
+            if (document.location.pathname == "/") {
+                hideContent();
+            }
         });
 
         $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
@@ -167,6 +173,16 @@
             }
             $("#content").load(document.location.pathname, {});
         };
+
+        function showContent() {
+            $("#list").addClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+            $("#content").removeClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+        }
+
+        function hideContent() {
+            $("#content").addClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+            $("#list").removeClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+        }
     </script>
  </body>
 </html>

@@ -45,6 +45,9 @@
 }
 
 <script>
+    document.title = 'Fork Yeah! - Add Project';
+    showContent();
+
     $(document).ready(function () {
         $("#add-form").submit(function () {
             $.post("@(Url.Action(MVC.Default.AddSubmit()))", $(this).serialize(), function (result) {

@@ -64,7 +64,7 @@
                             }
                         }
                     }
-                    using (Bs.Div().AddCss("table-cell", "full-height", "readme").Begin())
+                    using (Bs.Div().AddCss("table-cell", "full-height", "readme").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
                     {
                         using (Bs.Div().AddCss("relative-wrapper").Begin())
                         {
@@ -85,4 +85,5 @@
 
 <script>
     document.title = 'Fork Yeah! - @(Model.Name)';
+    showContent();
 </script>
