@@ -114,6 +114,14 @@
             afterSuccess();
         });
 
+        $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+            if (jqxhr.status == 404) {
+                $("#content").load("/Content/404.html");
+            } else {
+                $("#content").load("/Content/500.html");
+            }
+        });
+
         // Common behavior for document ready and after Ajax calls
         function afterSuccess() {
             $(".scroll-wrapper").niceScroll();

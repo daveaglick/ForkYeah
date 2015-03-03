@@ -119,6 +119,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\404.html" />
+    <Content Include="Content\500.html" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\github-markdown.css" />
     <Content Include="Content\octicons\LICENSE.txt" />
@@ -259,7 +261,6 @@
     <Content Include="Views\Default\Active.cshtml" />
     <Content Include="Views\Default\Archive.cshtml" />
     <Content Include="Views\Default\_Repository.cshtml" />
-    <Content Include="Views\Default\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
