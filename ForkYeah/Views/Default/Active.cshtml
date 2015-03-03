@@ -31,15 +31,18 @@
 }
 
 <script>
-    $( ".repository-link" ).click(function() {
+    $(".repository-link").click(function () {
         var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
         detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
         detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
-        $("#content").load(detailsAction);
+        $("#content").load(detailsAction, {});
+        history.pushState({}, null, detailsAction);
+        return false;
     });
 
     $("#archive-page").click(function () {
         var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
-        $("#list").load(archiveAction);
+        $("#list").load(archiveAction, {});
+        return false;
     });
 </script>

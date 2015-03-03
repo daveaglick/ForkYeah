@@ -15,8 +15,10 @@ namespace ForkYeah.Controllers
     {
         private ForkYeahContext _db = new ForkYeahContext();
 
-        [Route("")]
-        public virtual ActionResult Index()
+        // This should be the only GET route - all the SPA views are handled via POST
+        [Route("{*path}")]
+        [HttpGet]
+        public virtual ActionResult Index(string path)
         {
             List<KeyValuePair<string, string>> languages = _db.Repositories
                 .Select(x => x.Language)
@@ -34,15 +36,24 @@ namespace ForkYeah.Controllers
             });
         }
 
+        [Route("")]
+        [HttpPost]
+        public virtual ActionResult Intro()
+        {
+            // TODO: Display login page if not logged in, other content (such as add) if logged in
+            return PartialView("Add");
+        }
+
         [Route("add")]
+        [HttpPost]
         public virtual ActionResult Add()
         {
             return PartialView();
         }
 
+        [Route("add-submit")]
         [HttpPost]
-        [Route("add")]
-        public virtual ActionResult Add(string owner, string name)
+        public virtual ActionResult AddSubmit(string owner, string name)
         {
             // Null and whitespace checks
             if(string.IsNullOrWhiteSpace(owner) || string.IsNullOrWhiteSpace(name))
@@ -151,8 +162,9 @@ namespace ForkYeah.Controllers
 
             return Content(string.Empty);
         }
-        
+
         [Route("active")]
+        [HttpPost]
         public virtual ActionResult Active()
         {
             string language = GetLanguage();
@@ -177,6 +189,7 @@ namespace ForkYeah.Controllers
         }
 
         [Route("archive")]
+        [HttpPost]
         public virtual ActionResult Archive(int page = 0)
         {
             string language = GetLanguage();
@@ -219,6 +232,7 @@ namespace ForkYeah.Controllers
         }
 
         [Route("{owner}/{name}")]
+        [HttpPost]
         public virtual ActionResult Details(string owner, string name)
         {
             Data.Repository repository = _db.Repositories.FirstOrDefault(x => x.Owner == owner && x.Name == name);

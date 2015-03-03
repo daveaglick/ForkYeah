@@ -42,15 +42,20 @@
         var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
         detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
         detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
-        $("#content").load(detailsAction);
+        $("#content").load(detailsAction, {});
+        history.pushState({}, null, detailsAction);
+        return false;
     });
 
     @if(Model.NewerPage.HasValue)
     {
         <text>
             $("#newer-page").click(function () {
-                var archiveAction = "@(Url.Action(MVC.Default.Archive(Model.NewerPage.Value)))";
-                $("#list").load(archiveAction);
+                var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
+                $("#list").load(archiveAction, {
+                    @(MVC.Default.ArchiveParams.page): "@(Model.NewerPage.Value)"
+                });
+                return false;
             });
         </text>
     }
@@ -59,8 +64,11 @@
     {
         <text>
             $("#older-page").click(function () {
-                var archiveAction = "@(Url.Action(MVC.Default.Archive(Model.OlderPage.Value)))";
-                $("#list").load(archiveAction);
+                var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
+                $("#list").load(archiveAction, {                    
+                    @(MVC.Default.ArchiveParams.page): "@(Model.OlderPage.Value)"
+                });
+                return false;
             });
         </text>
     }

@@ -84,49 +84,58 @@
             // Repositories
             using (Bs.Div().AddCss("table-cell", "full-height").SetId("list").Begin())
             {
-                Html.RenderAction(MVC.Default.Active());
             }
             
             // Content
             using (Bs.Div().AddCss("table-cell", "full-height").SetId("content").SetVisibility(Visibility.HiddenMd | Visibility.HiddenSm | Visibility.HiddenXs).Begin())
             {
-                Html.RenderAction(MVC.Default.Add());
             }
         }
     }
 
     <script>
         $(document).ready(function () {
-            afterLoad();
+            afterSuccess();
 
             var languageFilter = docCookies.getItem("language");
             if (languageFilter != null) {
                 $("#select-language").val(languageFilter);
             }
+
+            // Initially load the active list and whatever happens to be in the address bar for the content
+            var activeAction = "@(Url.Action(MVC.Default.Active()))";
+            $("#list").load(activeAction, {});
+            $("#content").load(document.location.pathname, {});
+
+            history.pushState({}, null, document.location.pathname);
         });
 
         $(document).ajaxSuccess(function () {
-            afterLoad();
+            afterSuccess();
         });
 
         // Common behavior for document ready and after Ajax calls
-        function afterLoad() {
+        function afterSuccess() {
             $(".scroll-wrapper").niceScroll();
         }
 
         $(".add-button").click(function () {
             var addAction = "@(Url.Action(MVC.Default.Add()))";
-            $("#content").load(addAction);
+            $("#content").load(addAction, {});
+            history.pushState({}, null, addAction);
+            return false;
         });
 
         $("#active-link").click(function () {
             var activeAction = "@(Url.Action(MVC.Default.Active()))";
-            $("#list").load(activeAction);
+            $("#list").load(activeAction, {});
+            return false;
         });
 
         $("#archive-link").click(function () {
             var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
-            $("#list").load(archiveAction);
+            $("#list").load(archiveAction, {});
+            return false;
         });
 
         $("#select-language").change(function () {
@@ -137,8 +146,15 @@
                 docCookies.setItem("language", languageFilter, null, "/")
             }
             var activeAction = "@(Url.Action(MVC.Default.Active()))";
-            $("#list").load(activeAction);
+            $("#list").load(activeAction, {});
         });
+
+        window.onpopstate = function (event) {
+            if (event.state == null) {
+                return;
+            }
+            $("#content").load(document.location.pathname, {});
+        };
     </script>
  </body>
 </html>

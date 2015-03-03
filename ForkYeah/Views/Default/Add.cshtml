@@ -23,7 +23,7 @@
                         using (Bs.Form().SetId("add-form").AddCss("bottom-margin").SetInline().Begin())
                         {
                             <text>
-                                @Bs.Input(MVC.Default.AddParams.owner).SetPlaceholder("owner") / @Bs.Input(MVC.Default.AddParams.name).SetPlaceholder("name") @Bs.Submit("Add")
+                                @Bs.Input(MVC.Default.AddSubmitParams.owner).SetPlaceholder("owner") / @Bs.Input(MVC.Default.AddSubmitParams.name).SetPlaceholder("name") @Bs.Submit("Add")
                             </text>
                         }
                         @Bs.Alert(AlertState.Danger).SetId("add-form-error").SetVisibility(Visibility.Hidden)
@@ -47,7 +47,7 @@
 <script>
     $(document).ready(function () {
         $("#add-form").submit(function () {
-            $.post("@(Url.Action(MVC.Default.Add()))", $(this).serialize(), function (result) {
+            $.post("@(Url.Action(MVC.Default.AddSubmit()))", $(this).serialize(), function (result) {
                 if (result !== "") {
                     // Error
                     $("#add-form-error").text(result);
@@ -59,7 +59,7 @@
                     $("#add-form-success").removeClass("@(Css.Hidden)")
 
                     var listAction = "@(Url.Action(MVC.Default.Active()))";
-                    $("#list").load(listAction); // Reload the list
+                    $("#list").load(listAction, {}); // Reload the list
                 }
             });
             return false;

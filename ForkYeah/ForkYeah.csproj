@@ -259,6 +259,7 @@
     <Content Include="Views\Default\Active.cshtml" />
     <Content Include="Views\Default\Archive.cshtml" />
     <Content Include="Views\Default\_Repository.cshtml" />
+    <Content Include="Views\Default\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

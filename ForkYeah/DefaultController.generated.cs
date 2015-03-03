@@ -60,6 +60,18 @@ namespace ForkYeah.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Index()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AddSubmit()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddSubmit);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Details()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
@@ -81,7 +93,9 @@ namespace ForkYeah.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string Intro = "Intro";
             public readonly string Add = "Add";
+            public readonly string AddSubmit = "AddSubmit";
             public readonly string Active = "Active";
             public readonly string Archive = "Archive";
             public readonly string Details = "Details";
@@ -91,18 +105,28 @@ namespace ForkYeah.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string Intro = "Intro";
             public const string Add = "Add";
+            public const string AddSubmit = "AddSubmit";
             public const string Active = "Active";
             public const string Archive = "Archive";
             public const string Details = "Details";
         }
 
 
-        static readonly ActionParamsClass_Add s_params_Add = new ActionParamsClass_Add();
+        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Add AddParams { get { return s_params_Add; } }
+        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Add
+        public class ActionParamsClass_Index
+        {
+            public readonly string path = "path";
+        }
+        static readonly ActionParamsClass_AddSubmit s_params_AddSubmit = new ActionParamsClass_AddSubmit();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AddSubmit AddSubmitParams { get { return s_params_AddSubmit; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AddSubmit
         {
             public readonly string owner = "owner";
             public readonly string name = "name";
@@ -156,13 +180,25 @@ namespace ForkYeah.Controllers
         public T4MVC_DefaultController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string path);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index()
+        public override System.Web.Mvc.ActionResult Index(string path)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            IndexOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "path", path);
+            IndexOverride(callInfo, path);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void IntroOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Intro()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Intro);
+            IntroOverride(callInfo);
             return callInfo;
         }
 
@@ -178,15 +214,15 @@ namespace ForkYeah.Controllers
         }
 
         [NonAction]
-        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string owner, string name);
+        partial void AddSubmitOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string owner, string name);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Add(string owner, string name)
+        public override System.Web.Mvc.ActionResult AddSubmit(string owner, string name)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddSubmit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "owner", owner);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
-            AddOverride(callInfo, owner, name);
+            AddSubmitOverride(callInfo, owner, name);
             return callInfo;
         }
 
