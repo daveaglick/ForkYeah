@@ -41,10 +41,15 @@
         using (navbar.NavbarNav().SetRight().Begin())
         {
             @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button")
+            using(Bs.Span().SetVisibility(Visibility.HiddenLg).Begin())
+            {
+                @Bs.Link("Currently Active").AddCss("active-link")
+                @Bs.Link("Archive").AddCss("archive-link")
+            }
         }
     }
 
-    @using (Bs.Div().AddCss("table", "full-height").Begin())
+    @using (Bs.Div().AddCss("table-div", "full-height").Begin())
     {
         using(Bs.Div().AddCss("table-row", "full-height").Begin())
         {
@@ -61,10 +66,10 @@
 
                         @Bs.Element("hr")
 
-                        @Bs.Heading4(Bs.Link("Currently Active " + Bs.Icon(Icon.TriangleRight).ToString()).SetId("active-link").ToString()).AddCss("text-align-right")
+                        @Bs.Heading4(Bs.Link("Currently Active " + Bs.Icon(Icon.TriangleRight).ToString()).AddCss("active-link").ToString()).AddCss("text-align-right")
                         @Bs.Paragraph("Vote for your favorites by visiting their GitHub profile and staring the repo!")
 
-                        @Bs.Heading4(Bs.Link("Archive " + Bs.Icon(Icon.TriangleRight).ToString()).SetId("archive-link").ToString()).AddCss("text-align-right")
+                        @Bs.Heading4(Bs.Link("Archive " + Bs.Icon(Icon.TriangleRight).ToString()).AddCss("archive-link").ToString()).AddCss("text-align-right")
                         @Bs.Paragraph("Just because the voting is over doesn't mean these projects don't still rock.")
 
                         @Bs.Element("hr")
@@ -97,6 +102,8 @@
         $(document).ready(function () {
             afterSuccess();
 
+            $('#navbar-collapse').collapse({ 'toggle': false });
+
             var languageFilter = docCookies.getItem("language");
             if (languageFilter != null) {
                 $("#select-language").val(languageFilter);
@@ -112,6 +119,7 @@
 
         $(document).ajaxSend(function () {
             document.title = 'Fork Yeah!';
+            $("#navbar-collapse").collapse('hide');
             hideContent();
         });
 
@@ -144,13 +152,13 @@
             return false;
         });
 
-        $("#active-link").click(function () {
+        $(".active-link").click(function () {
             var activeAction = "@(Url.Action(MVC.Default.Active()))";
             $("#list").load(activeAction, {});
             return false;
         });
 
-        $("#archive-link").click(function () {
+        $(".archive-link").click(function () {
             var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
             $("#list").load(archiveAction, {});
             return false;
