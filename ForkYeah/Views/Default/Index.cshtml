@@ -38,13 +38,17 @@
 <body>
     @using (var navbar = Bs.Navbar("FORK YEAH!").SetInverse().SetFluid().SetPosition(NavbarPosition.FixedTop).Begin())
     {
-        using (navbar.NavbarNav().SetRight().Begin())
+        using(navbar.NavbarCollapse().Begin())
         {
-            @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button")
-            using(Bs.Span().SetVisibility(Visibility.HiddenLg).Begin())
+            using (navbar.NavbarNav().SetRight().Begin())
             {
-                @Bs.Link("Currently Active").AddCss("active-link")
-                @Bs.Link("Archive").AddCss("archive-link")
+                @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button")
+                @navbar.NavbarLink("Currently Active").SetVisibility(Visibility.HiddenLg).AddCss("active-link")
+                @navbar.NavbarLink("Archive").SetVisibility(Visibility.HiddenLg).AddCss("archive-link")
+            }
+            using (navbar.NavbarForm().SetRight().SetVisibility(Visibility.HiddenLg).Begin())
+            {
+                @Bs.Select(null, null, Model.Languages).AddCss("select-language")
             }
         }
     }
@@ -79,7 +83,7 @@
                             @Bs.Paragraph("Filter by language:")
                             using (Bs.Heading4().Begin())
                             {
-                                @Bs.Select(null, null, Model.Languages).SetId("select-language")
+                                @Bs.Select(null, null, Model.Languages).AddCss("select-language")
                             }
                         }
                     }
@@ -106,7 +110,7 @@
 
             var languageFilter = docCookies.getItem("language");
             if (languageFilter != null) {
-                $("#select-language").val(languageFilter);
+                $(".select-language").val(languageFilter);
             }
 
             // Initially load the active list and whatever happens to be in the address bar for the content
@@ -115,7 +119,23 @@
             $("#content").load(document.location.pathname, {});
 
             history.pushState({}, null, document.location.pathname);
+
+            resizeNavbar();
         });
+
+        $(window).resize(function () {
+            resizeNavbar();
+        });
+
+        function resizeNavbar() {
+            if (window.innerWidth < 1200) {
+                $(".navbar").removeClass("@(Css.NavbarFixedTop)");
+                $(".navbar").addClass("@(Css.NavbarStaticTop)");
+            } else {
+                $(".navbar").removeClass("@(Css.NavbarStaticTop)");
+                $(".navbar").addClass("@(Css.NavbarFixedTop)");
+            }
+        }
 
         $(document).ajaxSend(function () {
             document.title = 'Fork Yeah!';
@@ -164,15 +184,21 @@
             return false;
         });
 
-        $("#select-language").change(function () {
-            var languageFilter = $(this).val();
-            if (languageFilter == "") {
-                docCookies.removeItem("language", "/");
-            } else {
-                docCookies.setItem("language", languageFilter, null, "/")
+        var changingLanguageFilter = false;
+        $(".select-language").change(function () {
+            if (changingLanguageFilter == false) {
+                changingLanguageFilter = true;
+                var languageFilter = $(this).val();
+                if (languageFilter == "") {
+                    docCookies.removeItem("language", "/");
+                } else {
+                    docCookies.setItem("language", languageFilter, null, "/")
+                }
+                var activeAction = "@(Url.Action(MVC.Default.Active()))";
+                $("#list").load(activeAction, {});
+                $(".select-language").val(languageFilter);
+                changingLanguageFilter = false;
             }
-            var activeAction = "@(Url.Action(MVC.Default.Active()))";
-            $("#list").load(activeAction, {});
         });
 
         window.onpopstate = function (event) {

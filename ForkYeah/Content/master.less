@@ -2,18 +2,30 @@
 @import "bootstrap\\mixins.less";
 
 body { 
-    padding-top: 56px; 
+    padding-top: 0; 
+}
+
+.navbar {
+    margin-bottom: 0;
+    word-break: break-all;
 }
 
 .nav {
     padding-left: @padding-base-horizontal;
     padding-right: @padding-base-horizontal;
 
-    & a {
+    & > li > a {
         white-space: nowrap;
-        padding-left: @padding-base-horizontal;
-        padding-right: @padding-base-horizontal;
+        padding-left: 0;
+        padding-right: 0;
     }
+}
+
+.navbar-form {
+    padding-top: 0;
+    padding-bottom: 0;
+    border: none;
+    box-shadow: none;
 }
 
 .navbar-brand {
@@ -79,6 +91,7 @@ body {
     border-bottom: 4px solid @gray-light;
     padding: @padding-base-horizontal;
     padding-top: @padding-large-horizontal;
+    word-break: break-all;
 
     & > h2 {
         color: @brand-primary;
@@ -97,6 +110,10 @@ body {
     html, body {
         height: 100%;
         overflow: hidden;
+    }
+
+    body { 
+        padding-top: 56px; 
     }
     
     .navbar-brand {
