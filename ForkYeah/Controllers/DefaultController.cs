@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using ForkYeah.Data;
 using ForkYeah.Models.Default;
 using Octokit;
@@ -20,6 +21,34 @@ namespace ForkYeah.Controllers
         [HttpGet]
         public virtual ActionResult Index(string path)
         {
+            Index model = new Index();
+
+            // Get the username (okay to do this here and wait for it since index will only be called once)
+            model.Authorized = Request.Cookies.AllKeys.Contains("GitHubToken");
+            if (model.Authorized)
+            {
+                try
+                {
+                    string protectedTokenString = Request.Cookies["GitHubToken"].Value;
+                    byte[] protectedTokenBytes = System.Text.Encoding.ASCII.GetBytes(protectedTokenString);
+                    byte[] tokenBytes = MachineKey.Unprotect(protectedTokenBytes);
+                    string token = System.Text.Encoding.ASCII.GetString(tokenBytes);
+
+                    GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
+                    github.Credentials = new Credentials(token);
+                    User user = AsyncHelper.RunSync(() => github.User.Current());
+                    model.UserLogin = user.Login;
+                    model.UserAvatarUrl = user.AvatarUrl;
+                    model.UserHtmlUrl = user.HtmlUrl;
+                }
+                catch (Exception)
+                {
+                    model.Authorized = false;
+                    Request.Cookies.Remove("GitHubToken");
+                }
+            }
+
+            // Get the languages
             List<KeyValuePair<string, string>> languages = _db.Repositories
                 .Select(x => x.Language)
                 .Distinct()
@@ -29,11 +58,64 @@ namespace ForkYeah.Controllers
                 .Select(x => new KeyValuePair<string, string>(x, x))
                 .ToList();
             languages.Insert(0, new KeyValuePair<string,string>("All Languages", string.Empty));
+            model.Languages = languages;
 
-            return View(new Index
+            return View(model);
+        }
+
+        [Route("auth")]
+        [HttpGet]
+        public virtual ActionResult Auth()
+        {
+            // Get the client info
+            string clientId = System.Configuration.ConfigurationManager.AppSettings["GitHubClientId"];
+
+            // Store a random string to prevent Cross-Site Request Forgery
+            string csrf = Membership.GeneratePassword(24, 1);
+            Session["CSRF:State"] = csrf;
+
+            // Get the login request URL
+            GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
+            OauthLoginRequest loginRequest = new OauthLoginRequest(clientId)
             {
-                Languages = languages
-            });
+                Scopes = { "user" },
+                State = csrf
+            };
+            return Redirect(github.Oauth.GetGitHubLoginUrl(loginRequest).ToString());
+        }
+
+        [Route("auth-complete")]
+        [HttpGet]
+        public virtual ActionResult AuthComplete(string code, string state)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(code))
+                {
+                    // Get the client info
+                    string clientId = System.Configuration.ConfigurationManager.AppSettings["GitHubClientId"];
+                    string clientSecret = System.Configuration.ConfigurationManager.AppSettings["GitHubClientSecret"];
+
+                    // Check the Cross-Site Request Forgery string
+                    string csrf = Session["CSRF:State"] as string;
+                    if (csrf == state)
+                    {
+                        // Get and store the token
+                        GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
+                        OauthTokenRequest tokenRequest = new OauthTokenRequest(clientId, clientSecret, code);
+                        OauthToken token = AsyncHelper.RunSync(() => github.Oauth.CreateAccessToken(tokenRequest));
+                        byte[] tokenBytes = System.Text.Encoding.ASCII.GetBytes(token.AccessToken);
+                        byte[] protectedToken = MachineKey.Protect(tokenBytes);
+                        string protectedTokenString = System.Text.Encoding.ASCII.GetString(protectedToken);
+                        Request.Cookies.Add(new HttpCookie("GitHubToken", protectedTokenString));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            Session["CSRF:State"] = null;
+            return RedirectToAction(MVC.Default.Index());
         }
 
         [Route("")]

@@ -66,6 +66,12 @@ namespace ForkYeah.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AuthComplete()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AuthComplete);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AddSubmit()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddSubmit);
@@ -93,6 +99,8 @@ namespace ForkYeah.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string Auth = "Auth";
+            public readonly string AuthComplete = "AuthComplete";
             public readonly string Intro = "Intro";
             public readonly string Add = "Add";
             public readonly string AddSubmit = "AddSubmit";
@@ -105,6 +113,8 @@ namespace ForkYeah.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string Auth = "Auth";
+            public const string AuthComplete = "AuthComplete";
             public const string Intro = "Intro";
             public const string Add = "Add";
             public const string AddSubmit = "AddSubmit";
@@ -121,6 +131,15 @@ namespace ForkYeah.Controllers
         public class ActionParamsClass_Index
         {
             public readonly string path = "path";
+        }
+        static readonly ActionParamsClass_AuthComplete s_params_AuthComplete = new ActionParamsClass_AuthComplete();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AuthComplete AuthCompleteParams { get { return s_params_AuthComplete; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AuthComplete
+        {
+            public readonly string code = "code";
+            public readonly string state = "state";
         }
         static readonly ActionParamsClass_AddSubmit s_params_AddSubmit = new ActionParamsClass_AddSubmit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -188,6 +207,30 @@ namespace ForkYeah.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "path", path);
             IndexOverride(callInfo, path);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AuthOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Auth()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Auth);
+            AuthOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AuthCompleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string code, string state);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AuthComplete(string code, string state)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AuthComplete);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "code", code);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "state", state);
+            AuthCompleteOverride(callInfo, code, state);
             return callInfo;
         }
 

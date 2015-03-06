@@ -38,10 +38,16 @@
 <body>
     @using (var navbar = Bs.Navbar("FORK YEAH!").SetInverse().SetFluid().SetPosition(NavbarPosition.FixedTop).Begin())
     {
-        using(navbar.NavbarCollapse().Begin())
+        using (navbar.NavbarCollapse().Begin())
         {
             using (navbar.NavbarNav().SetRight().Begin())
             {
+                using(@navbar.NavbarText().RenderIf(Model.UserLogin != null).Begin())
+                {
+                    @Bs.Image(Model.UserAvatarUrl).AddStyle("height", "30px")
+                    @Bs.Link(Model.UserLogin, Model.UserHtmlUrl)
+                }
+                @navbar.NavbarButton("Login").SetIcon(Icon.LogIn).SetState(ButtonState.Default).AddCss("login-button").RenderIf(!Model.Authorized)
                 @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button")
                 @navbar.NavbarLink("Currently Active").SetVisibility(Visibility.HiddenLg).AddCss("active-link")
                 @navbar.NavbarLink("Archive").SetVisibility(Visibility.HiddenLg).AddCss("archive-link")
@@ -65,7 +71,9 @@
                     using(Bs.Div().AddCss("scroll-wrapper").Begin())
                     {                    
                         @Bs.Heading2("Find awesome undiscovered open source projects").AddCss("bottom-margin")
-    
+
+                        @Bs.Button("Login With GitHub").SetIcon(Icon.LogIn).SetState(ButtonState.Default).AddCss("login-button", "bottom-margin").RenderIf(!Model.Authorized)
+        
                         @Bs.Button("Add a Project").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button", "bottom-margin")
 
                         @Bs.Element("hr")
@@ -164,6 +172,12 @@
         function afterSuccess() {
             $(".scroll-wrapper").niceScroll();
         }
+
+        $(".login-button").click(function () {
+            var authAction = "@(Url.Action(MVC.Default.Auth()))";
+            window.location.href = authAction;
+            return false;
+        });
 
         $(".add-button").click(function () {
             var addAction = "@(Url.Action(MVC.Default.Add()))";
