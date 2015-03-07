@@ -42,10 +42,13 @@
         {
             using (navbar.NavbarNav().SetRight().Begin())
             {
-                using(@navbar.NavbarText().RenderIf(Model.UserLogin != null).Begin())
+                if (Model.UserLogin != null)
                 {
-                    @Bs.Image(Model.UserAvatarUrl).AddStyle("height", "30px")
-                    @Bs.Link(Model.UserLogin, Model.UserHtmlUrl)
+                    using(@navbar.NavbarText().Begin())
+                    {
+                        @Bs.Image(Model.UserAvatarUrl).AddStyle("height", "20px").AddStyle("margin-right", "6px").SetStyle(ImageStyle.Rounded)
+                        @Bs.Link(Model.UserLogin, Model.UserHtmlUrl)
+                    }
                 }
                 @navbar.NavbarButton("Login").SetIcon(Icon.LogIn).SetState(ButtonState.Default).AddCss("login-button").RenderIf(!Model.Authorized)
                 @navbar.NavbarButton("Add").SetIcon(Icon.PlusSign).SetState(ButtonState.Success).AddCss("add-button")

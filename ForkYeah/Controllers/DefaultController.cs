@@ -24,16 +24,12 @@ namespace ForkYeah.Controllers
             Index model = new Index();
 
             // Get the username (okay to do this here and wait for it since index will only be called once)
-            model.Authorized = Request.Cookies.AllKeys.Contains("GitHubToken");
-            if (model.Authorized)
+            try
             {
-                try
+                string token = GetTokenCookie();
+                if (token != null)
                 {
-                    string protectedTokenString = Request.Cookies["GitHubToken"].Value;
-                    byte[] protectedTokenBytes = System.Text.Encoding.ASCII.GetBytes(protectedTokenString);
-                    byte[] tokenBytes = MachineKey.Unprotect(protectedTokenBytes);
-                    string token = System.Text.Encoding.ASCII.GetString(tokenBytes);
-
+                    model.Authorized = true;
                     GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
                     github.Credentials = new Credentials(token);
                     User user = AsyncHelper.RunSync(() => github.User.Current());
@@ -41,11 +37,11 @@ namespace ForkYeah.Controllers
                     model.UserAvatarUrl = user.AvatarUrl;
                     model.UserHtmlUrl = user.HtmlUrl;
                 }
-                catch (Exception)
-                {
-                    model.Authorized = false;
-                    Request.Cookies.Remove("GitHubToken");
-                }
+            }
+            catch (Exception)
+            {
+                model.Authorized = false;
+                SetTokenCookie(null);
             }
 
             // Get the languages
@@ -61,6 +57,41 @@ namespace ForkYeah.Controllers
             model.Languages = languages;
 
             return View(model);
+        }
+
+        private void SetTokenCookie(string token)
+        {
+            if(token == null)
+            {
+                // Clear the token cookie
+                Response.Cookies.Add(new HttpCookie("GitHubToken")
+                {
+                    Expires = DateTime.Now.AddDays(-1)
+                });
+                return;
+            }
+            string tokenPassword = System.Configuration.ConfigurationManager.AppSettings["GitHubTokenPassword"];
+            string tokenSalt = System.Configuration.ConfigurationManager.AppSettings["GitHubTokenSalt"];
+            string encryptedToken = EncryptionHelper.Encrypt(token, tokenPassword, tokenSalt);
+            string encodedToken = HttpUtility.HtmlEncode(encryptedToken);
+            Response.Cookies.Add(new HttpCookie("GitHubToken", Uri.EscapeDataString(encodedToken))
+            {
+                Expires = DateTime.Now.AddYears(1)
+            });
+        }
+
+        private string GetTokenCookie()
+        {
+            string token = null;
+            if (Request.Cookies.AllKeys.Contains("GitHubToken"))
+            {
+                string tokenPassword = System.Configuration.ConfigurationManager.AppSettings["GitHubTokenPassword"];
+                string tokenSalt = System.Configuration.ConfigurationManager.AppSettings["GitHubTokenSalt"];
+                string encodedToken = Uri.UnescapeDataString(Request.Cookies["GitHubToken"].Value);
+                string encryptedToken = HttpUtility.HtmlDecode(encodedToken);
+                token = EncryptionHelper.Decrypt(encryptedToken, tokenPassword, tokenSalt);
+            }
+            return token;
         }
 
         [Route("auth")]
@@ -104,10 +135,7 @@ namespace ForkYeah.Controllers
                         GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
                         OauthTokenRequest tokenRequest = new OauthTokenRequest(clientId, clientSecret, code);
                         OauthToken token = AsyncHelper.RunSync(() => github.Oauth.CreateAccessToken(tokenRequest));
-                        byte[] tokenBytes = System.Text.Encoding.ASCII.GetBytes(token.AccessToken);
-                        byte[] protectedToken = MachineKey.Protect(tokenBytes);
-                        string protectedTokenString = System.Text.Encoding.ASCII.GetString(protectedToken);
-                        Request.Cookies.Add(new HttpCookie("GitHubToken", protectedTokenString));
+                        SetTokenCookie(token.AccessToken);
                     }
                 }
             }
@@ -308,7 +336,7 @@ namespace ForkYeah.Controllers
             string language = null;
             if (Request.Cookies.AllKeys.Contains("language"))
             {
-                language = HttpUtility.UrlDecode(Request.Cookies["language"].Value);
+                language = Uri.UnescapeDataString(Request.Cookies["language"].Value);
             }
             return string.IsNullOrWhiteSpace(language) ? null : language;
         }

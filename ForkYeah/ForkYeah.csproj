@@ -237,6 +237,7 @@
     <Compile Include="DefaultController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="EncryptionHelper.cs" />
     <Compile Include="ForkYeahViewPage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
