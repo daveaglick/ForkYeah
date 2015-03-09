@@ -23,12 +23,12 @@ namespace ForkYeah.Controllers
         {
             Index model = new Index();
 
-            // Get the username (okay to do this here and wait for it since index will only be called once)
             try
             {
                 string token = GetTokenCookie();
                 if (token != null)
                 {
+                    // Get the username (okay to do this here and wait for it since index will only be called once)
                     model.Authorized = true;
                     GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
                     github.Credentials = new Credentials(token);
@@ -36,12 +36,17 @@ namespace ForkYeah.Controllers
                     model.UserLogin = user.Login;
                     model.UserAvatarUrl = user.AvatarUrl;
                     model.UserHtmlUrl = user.HtmlUrl;
+
+                    // Also get the user's starred repositories
+                    IEnumerable<Octokit.Repository> starred = AsyncHelper.RunSync(() => github.Activity.Starring.GetAllForCurrent());
+                    Session["Starred"] = starred.Select(x => x.Owner.Login + " " + x.Name);
                 }
             }
             catch (Exception)
             {
                 model.Authorized = false;
                 SetTokenCookie(null);
+                Session.Remove("Starred");
             }
 
             // Get the languages
@@ -96,21 +101,21 @@ namespace ForkYeah.Controllers
 
         [Route("auth")]
         [HttpGet]
-        public virtual ActionResult Auth()
+        public virtual ActionResult Auth(string path, string owner, string name)
         {
             // Get the client info
             string clientId = System.Configuration.ConfigurationManager.AppSettings["GitHubClientId"];
 
             // Store a random string to prevent Cross-Site Request Forgery
             string csrf = Membership.GeneratePassword(24, 1);
-            Session["CSRF:State"] = csrf;
+            Session["Csrf"] = csrf;
 
             // Get the login request URL
             GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
             OauthLoginRequest loginRequest = new OauthLoginRequest(clientId)
             {
                 Scopes = { "user" },
-                State = csrf
+                State = string.Join(" ", csrf, path, owner, name)
             };
             return Redirect(github.Oauth.GetGitHubLoginUrl(loginRequest).ToString());
         }
@@ -119,6 +124,7 @@ namespace ForkYeah.Controllers
         [HttpGet]
         public virtual ActionResult AuthComplete(string code, string state)
         {
+            string path = null;
             try
             {
                 if (!string.IsNullOrEmpty(code))
@@ -127,23 +133,36 @@ namespace ForkYeah.Controllers
                     string clientId = System.Configuration.ConfigurationManager.AppSettings["GitHubClientId"];
                     string clientSecret = System.Configuration.ConfigurationManager.AppSettings["GitHubClientSecret"];
 
+                    // Get the state
+                    string[] stateSplit = state.Split(new [] { ' ' }, StringSplitOptions.None);
+                    string stateCsrf = stateSplit[0];
+                    path = stateSplit[1];
+                    string owner = stateSplit[2];
+                    string name = stateSplit[3];
+
                     // Check the Cross-Site Request Forgery string
-                    string csrf = Session["CSRF:State"] as string;
-                    if (csrf == state)
+                    string csrf = Session["Csrf"] as string;
+                    if (csrf == stateCsrf)
                     {
                         // Get and store the token
                         GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
                         OauthTokenRequest tokenRequest = new OauthTokenRequest(clientId, clientSecret, code);
                         OauthToken token = AsyncHelper.RunSync(() => github.Oauth.CreateAccessToken(tokenRequest));
                         SetTokenCookie(token.AccessToken);
+
+                        // Check if we're supposed to star something
+                        if(!string.IsNullOrWhiteSpace(owner) && !string.IsNullOrWhiteSpace(name))
+                        {
+                            // TODO
+                        }
                     }
                 }
             }
             catch (Exception)
             {
             }
-            Session["CSRF:State"] = null;
-            return RedirectToAction(MVC.Default.Index());
+            Session["Csrf"] = null;
+            return RedirectToAction(MVC.Default.Index(path));
         }
 
         [Route("")]
@@ -277,12 +296,14 @@ namespace ForkYeah.Controllers
         [HttpPost]
         public virtual ActionResult Active()
         {
+            IEnumerable<string> starred = Session["Starred"] as IEnumerable<string>;
             string language = GetLanguage();
             DateTimeOffset activeOffset = DateTimeOffset.Now.AddHours(-96);
             IEnumerable<RepositoryListItem> repositories = _db.Repositories
                 .Where(x => x.DbAdded >= activeOffset)
                 .Where(x => language == null || x.Language == language)
                 .OrderByDescending(x => x.StargazersCountChange)
+                .ToList()
                 .Select(x => new RepositoryListItem
                 {
                     DbAdded = x.DbAdded,
@@ -292,7 +313,8 @@ namespace ForkYeah.Controllers
                     Language = x.Language,
                     HtmlUrl = x.HtmlUrl,
                     StargazersCount = x.StargazersCount,
-                    StargazersCountChange = x.StargazersCountChange
+                    StargazersCountChange = x.StargazersCountChange,
+                    Starred = starred != null && starred.Contains(x.Owner + " " + x.Name)
                 });
 
             return PartialView(repositories);
@@ -302,6 +324,7 @@ namespace ForkYeah.Controllers
         [HttpPost]
         public virtual ActionResult Archive(int page = 0)
         {
+            IEnumerable<string> starred = Session["Starred"] as IEnumerable<string>;
             string language = GetLanguage();
             int pageSize = 20;
             DateTimeOffset activeOffset = DateTimeOffset.Now.AddHours(-96);
@@ -309,6 +332,9 @@ namespace ForkYeah.Controllers
                 .Where(x => x.DbAdded < activeOffset)
                 .Where(x => language == null || x.Language == language)
                 .OrderByDescending(x => x.DbAdded)
+                .Skip(page * pageSize)
+                .Take(pageSize)
+                .ToList()
                 .Select(x => new RepositoryListItem
                 {
                     DbAdded = x.DbAdded,
@@ -318,10 +344,9 @@ namespace ForkYeah.Controllers
                     Language = x.Language,
                     HtmlUrl = x.HtmlUrl,
                     StargazersCount = x.StargazersCount,
-                    StargazersCountChange = x.StargazersCountChange
-                })
-                .Skip(page * pageSize)
-                .Take(pageSize);
+                    StargazersCountChange = x.StargazersCountChange,
+                    Starred = starred != null && starred.Contains(x.Owner + " " + x.Name)
+                });
 
             return PartialView(new Archive()
             {
@@ -345,6 +370,7 @@ namespace ForkYeah.Controllers
         [HttpPost]
         public virtual ActionResult Details(string owner, string name)
         {
+            // Get the repository domain model
             Data.Repository repository = _db.Repositories.FirstOrDefault(x => x.Owner == owner && x.Name == name);
             if (repository == null)
             {
@@ -369,6 +395,45 @@ namespace ForkYeah.Controllers
                 ContributorCount = repository.ContributorCount,
                 CommitCount = repository.CommitCount
             });
+        }
+
+        [Route("Star")]
+        [HttpPost]
+        public virtual ActionResult Star(string owner, string name)
+        {
+            // Get the repository domain model
+            Data.Repository repository = _db.Repositories.FirstOrDefault(x => x.Owner == owner && x.Name == name);
+            if (repository == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Attempt to add a star
+            try
+            {
+                string token = GetTokenCookie();
+                if (token != null)
+                {
+                    GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
+                    github.Credentials = new Credentials(token);
+                    AsyncHelper.RunSync(() => github.Activity.Starring.StarRepo(owner, name));
+                }
+            }
+            catch(AuthorizationException)
+            {
+                // A return value indicates to the JS handler to redirect to /auth
+                return Content("auth");
+            }
+
+            // Go ahead and add the star to the domain model (it'll get reset on the next auto-update)
+            repository.StargazersCount++;
+            repository.StargazersCountChange++;
+            _db.SaveChanges();
+
+            // TODO: Also update the session cache of user's stared repos
+
+            // TODO: Update the button in the view on success
+            return Content(string.Empty);
         }
     }
 }

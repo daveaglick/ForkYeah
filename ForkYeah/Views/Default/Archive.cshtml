@@ -38,15 +38,6 @@
 }
 
 <script>
-    $( ".repository-link" ).click(function() {
-        var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
-        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
-        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
-        $("#content").load(detailsAction, {});
-        history.pushState({}, null, detailsAction);
-        return false;
-    });
-
     @if(Model.NewerPage.HasValue)
     {
         <text>

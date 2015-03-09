@@ -9,8 +9,8 @@
         using (Bs.ButtonGroup().SetVertical().Begin())
         {
             // TODO: Add tooltips
-            @Bs.LinkButton(Model.StargazersCountChange.ToString(), Model.HtmlUrl).SetIcon(Icon.TriangleTop).SetState(ButtonState.Primary)
-            @Bs.LinkButton(Bs.Span().AddCss("octicon", "octicon-mark-github") + " " + Model.StargazersCount.ToString(), Model.HtmlUrl)
+            @Bs.LinkButton("<span class='star-count'>" + Model.StargazersCountChange.ToString() + "</span>").AddCss("repository-star").SetIcon(Icon.TriangleTop).SetState(ButtonState.Primary).SetDisabled(Model.Starred).AddAttribute("data-owner", Model.Owner).AddAttribute("data-name", Model.Name)
+            @Bs.LinkButton(Bs.Span().AddCss("octicon", "octicon-mark-github") + " <span class='star-count'>" + Model.StargazersCount.ToString() + "</span>", Model.HtmlUrl)
         }
     }
     using (Bs.Div().AddCss("repository-description").Begin())

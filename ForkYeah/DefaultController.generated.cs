@@ -66,6 +66,12 @@ namespace ForkYeah.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Auth()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Auth);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AuthComplete()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AuthComplete);
@@ -81,6 +87,12 @@ namespace ForkYeah.Controllers
         public virtual System.Web.Mvc.ActionResult Details()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Details);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Star()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Star);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -107,6 +119,7 @@ namespace ForkYeah.Controllers
             public readonly string Active = "Active";
             public readonly string Archive = "Archive";
             public readonly string Details = "Details";
+            public readonly string Star = "Star";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -121,6 +134,7 @@ namespace ForkYeah.Controllers
             public const string Active = "Active";
             public const string Archive = "Archive";
             public const string Details = "Details";
+            public const string Star = "Star";
         }
 
 
@@ -131,6 +145,16 @@ namespace ForkYeah.Controllers
         public class ActionParamsClass_Index
         {
             public readonly string path = "path";
+        }
+        static readonly ActionParamsClass_Auth s_params_Auth = new ActionParamsClass_Auth();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Auth AuthParams { get { return s_params_Auth; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Auth
+        {
+            public readonly string path = "path";
+            public readonly string owner = "owner";
+            public readonly string name = "name";
         }
         static readonly ActionParamsClass_AuthComplete s_params_AuthComplete = new ActionParamsClass_AuthComplete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -163,6 +187,15 @@ namespace ForkYeah.Controllers
         public ActionParamsClass_Details DetailsParams { get { return s_params_Details; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Details
+        {
+            public readonly string owner = "owner";
+            public readonly string name = "name";
+        }
+        static readonly ActionParamsClass_Star s_params_Star = new ActionParamsClass_Star();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Star StarParams { get { return s_params_Star; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Star
         {
             public readonly string owner = "owner";
             public readonly string name = "name";
@@ -211,13 +244,16 @@ namespace ForkYeah.Controllers
         }
 
         [NonAction]
-        partial void AuthOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void AuthOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string path, string owner, string name);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Auth()
+        public override System.Web.Mvc.ActionResult Auth(string path, string owner, string name)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Auth);
-            AuthOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "path", path);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "owner", owner);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
+            AuthOverride(callInfo, path, owner, name);
             return callInfo;
         }
 
@@ -302,6 +338,19 @@ namespace ForkYeah.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "owner", owner);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
             DetailsOverride(callInfo, owner, name);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void StarOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string owner, string name);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Star(string owner, string name)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Star);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "owner", owner);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "name", name);
+            StarOverride(callInfo, owner, name);
             return callInfo;
         }
 

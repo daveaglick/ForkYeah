@@ -174,32 +174,68 @@
         // Common behavior for document ready and after Ajax calls
         function afterSuccess() {
             $(".scroll-wrapper").niceScroll();
+
+            // Rebind the click handlers on every successful ajax call
+            $(".login-button").click(function () {
+                var authAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Auth()))";
+                authAction = authAction.replace("{@(MVC.Default.AuthParams.path)}", document.location.pathname);
+                window.location.href = authAction;
+                return false;
+            });
+
+            $(".add-button").click(function () {
+                var addAction = "@(Url.Action(MVC.Default.Add()))";
+                $("#content").load(addAction, {});
+                history.pushState({}, null, addAction);
+                return false;
+            });
+
+            $(".active-link").click(function () {
+                var activeAction = "@(Url.Action(MVC.Default.Active()))";
+                $("#list").load(activeAction, {});
+                return false;
+            });
+
+            $(".archive-link").click(function () {
+                var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
+                $("#list").load(archiveAction, {});
+                return false;
+            });
+
+            $(".repository-star").click(function () {
+                var owner = $(this).data("owner");
+                var name = $(this).data("name");
+                var starAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Star()))";
+                starAction = starAction.replace("{@(MVC.Default.StarParams.owner)}", owner);
+                starAction = starAction.replace("{@(MVC.Default.StarParams.name)}", name);
+                $.post(starAction, function (result) {
+                    if (result !== "") {
+                        // Need to authenticate
+                        var authAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Auth()))";
+                        authAction = authAction.replace("{@(MVC.Default.AuthParams.path)}", document.location.pathname);
+                        authAction = authAction.replace("{@(MVC.Default.AuthParams.owner)}", owner);
+                        authAction = authAction.replace("{@(MVC.Default.AuthParams.path)}", name);
+                        window.location.href = authAction;
+                    } else {
+                        // Success, increment the star count and disable
+                        $(this).addClass("@(Css.Disabled)");
+                        $(this).parent().find(".star-count").each(function () {
+                            $(this).html((parseInt($number.html(), 10) || 0) + 1);
+                        });
+                    }
+                });
+                return false;
+            });
+
+            $(".repository-link").click(function () {
+                var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
+                detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
+                detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
+                $("#content").load(detailsAction, {});
+                history.pushState({}, null, detailsAction);
+                return false;
+            });
         }
-
-        $(".login-button").click(function () {
-            var authAction = "@(Url.Action(MVC.Default.Auth()))";
-            window.location.href = authAction;
-            return false;
-        });
-
-        $(".add-button").click(function () {
-            var addAction = "@(Url.Action(MVC.Default.Add()))";
-            $("#content").load(addAction, {});
-            history.pushState({}, null, addAction);
-            return false;
-        });
-
-        $(".active-link").click(function () {
-            var activeAction = "@(Url.Action(MVC.Default.Active()))";
-            $("#list").load(activeAction, {});
-            return false;
-        });
-
-        $(".archive-link").click(function () {
-            var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
-            $("#list").load(archiveAction, {});
-            return false;
-        });
 
         var changingLanguageFilter = false;
         $(".select-language").change(function () {
