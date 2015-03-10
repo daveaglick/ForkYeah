@@ -39,7 +39,7 @@ namespace ForkYeah.Controllers
 
                     // Also get the user's starred repositories
                     IEnumerable<Octokit.Repository> starred = AsyncHelper.RunSync(() => github.Activity.Starring.GetAllForCurrent());
-                    Session["Starred"] = starred.Select(x => x.Owner.Login + " " + x.Name);
+                    Session["Starred"] = starred.Select(x => x.Owner.Login + " " + x.Name).ToList();
                 }
             }
             catch (Exception)
@@ -115,7 +115,7 @@ namespace ForkYeah.Controllers
             OauthLoginRequest loginRequest = new OauthLoginRequest(clientId)
             {
                 Scopes = { "user" },
-                State = string.Join(" ", csrf, path, owner, name)
+                State = csrf + " " + path + " " + owner + " " + name
             };
             return Redirect(github.Oauth.GetGitHubLoginUrl(loginRequest).ToString());
         }
@@ -136,9 +136,12 @@ namespace ForkYeah.Controllers
                     // Get the state
                     string[] stateSplit = state.Split(new [] { ' ' }, StringSplitOptions.None);
                     string stateCsrf = stateSplit[0];
-                    path = stateSplit[1];
-                    string owner = stateSplit[2];
-                    string name = stateSplit[3];
+                    if (stateSplit.Length > 1 && !string.IsNullOrWhiteSpace(stateSplit[1]))
+                    {
+                        path = stateSplit[1];
+                    }
+                    string owner = stateSplit.Length > 2 ? stateSplit[2] : null;
+                    string name = stateSplit.Length > 3 ? stateSplit[3] : null;
 
                     // Check the Cross-Site Request Forgery string
                     string csrf = Session["Csrf"] as string;
@@ -153,7 +156,7 @@ namespace ForkYeah.Controllers
                         // Check if we're supposed to star something
                         if(!string.IsNullOrWhiteSpace(owner) && !string.IsNullOrWhiteSpace(name))
                         {
-                            // TODO
+                            Star(owner, name);
                         }
                     }
                 }
@@ -162,7 +165,16 @@ namespace ForkYeah.Controllers
             {
             }
             Session["Csrf"] = null;
-            return RedirectToAction(MVC.Default.Index(path));
+            return Redirect(string.IsNullOrWhiteSpace(path) ? "/" : path);
+        }
+
+        [Route("logout")]
+        [HttpGet]
+        public virtual ActionResult Logout()
+        {
+            SetTokenCookie(null);
+            Session.Remove("Starred");
+            return RedirectToAction(Index());
         }
 
         [Route("")]
@@ -185,6 +197,8 @@ namespace ForkYeah.Controllers
         public virtual ActionResult AddSubmit(string owner, string name)
         {
             // Null and whitespace checks
+            owner = owner.Trim();
+            name = name.Trim();
             if(string.IsNullOrWhiteSpace(owner) || string.IsNullOrWhiteSpace(name))
             {
                 return Content("A repository owner and name must be provided.");
@@ -216,9 +230,9 @@ namespace ForkYeah.Controllers
                 }
 
                 // Check number of stars
-                if (repository.StargazersCount > 100)
+                if (repository.StargazersCount > 200)
                 {
-                    return Content(string.Format("That repository has {0} stars, which is too many. Limiting submissions to projects with fewer than 100 stars helps ensure attention for those projects that remain undiscovered.", repository.StargazersCount));
+                    return Content(string.Format("That repository has {0} stars, which is too many. Limiting submissions to projects with fewer than 200 stars helps ensure attention for those projects that remain undiscovered.", repository.StargazersCount));
                 }
 
                 // Get the contributors
@@ -227,9 +241,9 @@ namespace ForkYeah.Controllers
 
                 // Make sure there are enough commits
                 commitCount = contributors.Sum(x => x.Total);
-                if(commitCount < 20)
+                if(commitCount < 10)
                 {
-                    return Content(string.Format("That repository has {0} commits, which is not enough. Limiting submissions to projects with at least 20 commits helps ensure that the project is actively maintained.", commitCount));
+                    return Content(string.Format("That repository has {0} commits, which is not enough. Limiting submissions to projects with at least 10 commits helps ensure that the project is actively maintained.", commitCount));
                 }
 
                 // Make sure that there's enough history
@@ -296,7 +310,7 @@ namespace ForkYeah.Controllers
         [HttpPost]
         public virtual ActionResult Active()
         {
-            IEnumerable<string> starred = Session["Starred"] as IEnumerable<string>;
+            List<string> starred = Session["Starred"] as List<string>;
             string language = GetLanguage();
             DateTimeOffset activeOffset = DateTimeOffset.Now.AddHours(-96);
             IEnumerable<RepositoryListItem> repositories = _db.Repositories
@@ -324,7 +338,7 @@ namespace ForkYeah.Controllers
         [HttpPost]
         public virtual ActionResult Archive(int page = 0)
         {
-            IEnumerable<string> starred = Session["Starred"] as IEnumerable<string>;
+            List<string> starred = Session["Starred"] as List<string>;
             string language = GetLanguage();
             int pageSize = 20;
             DateTimeOffset activeOffset = DateTimeOffset.Now.AddHours(-96);
@@ -397,7 +411,7 @@ namespace ForkYeah.Controllers
             });
         }
 
-        [Route("Star")]
+        [Route("{owner}/{name}/Star")]
         [HttpPost]
         public virtual ActionResult Star(string owner, string name)
         {
@@ -418,6 +432,10 @@ namespace ForkYeah.Controllers
                     github.Credentials = new Credentials(token);
                     AsyncHelper.RunSync(() => github.Activity.Starring.StarRepo(owner, name));
                 }
+                else
+                {
+                    return Content("auth");
+                }
             }
             catch(AuthorizationException)
             {
@@ -425,14 +443,17 @@ namespace ForkYeah.Controllers
                 return Content("auth");
             }
 
-            // Go ahead and add the star to the domain model (it'll get reset on the next auto-update)
-            repository.StargazersCount++;
-            repository.StargazersCountChange++;
-            _db.SaveChanges();
+            // Note that we don't update the database here - that would introduce a way to game the system by repeatedly 
+            // starring on FY then unstarring on GH - the count will get updated in the DB on the next background refresh
 
-            // TODO: Also update the session cache of user's stared repos
+            // Might not have the session object if starring caused the auth process
+            List<string> starred = Session["Starred"] as List<string>;
+            if (starred != null)
+            {
+                starred.Add(owner + " " + name);
+                Session["Starred"] = starred;
+            }
 
-            // TODO: Update the button in the view on success
             return Content(string.Empty);
         }
     }

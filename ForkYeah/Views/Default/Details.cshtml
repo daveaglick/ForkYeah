@@ -28,7 +28,7 @@
                         {
                             @Bs.Strong(Bs.Badge(Model.Language).ToString())
                         }
-                        @Bs.Span().AddCss("octicon", "octicon-star") @Model.StargazersCount Stars (+@Model.StargazersCountChange.ToString("+0;-0;0")) /
+                        @Bs.Span().AddCss("octicon", "octicon-star") @Model.StargazersCount Stars (@Model.StargazersCountChange.ToString("+0;-0;0")) /
                         @Bs.Span().AddCss("octicon", "octicon-repo-forked") @Model.ForksCount Forks /
                         @Bs.Span().AddCss("octicon", "octicon-history") @Model.CommitCount Commits / 
                         @Bs.Span().AddCss("octicon", "octicon-organization") @Model.ContributorCount Contributors /

@@ -113,6 +113,7 @@ namespace ForkYeah.Controllers
             public readonly string Index = "Index";
             public readonly string Auth = "Auth";
             public readonly string AuthComplete = "AuthComplete";
+            public readonly string Logout = "Logout";
             public readonly string Intro = "Intro";
             public readonly string Add = "Add";
             public readonly string AddSubmit = "AddSubmit";
@@ -128,6 +129,7 @@ namespace ForkYeah.Controllers
             public const string Index = "Index";
             public const string Auth = "Auth";
             public const string AuthComplete = "AuthComplete";
+            public const string Logout = "Logout";
             public const string Intro = "Intro";
             public const string Add = "Add";
             public const string AddSubmit = "AddSubmit";
@@ -267,6 +269,17 @@ namespace ForkYeah.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "code", code);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "state", state);
             AuthCompleteOverride(callInfo, code, state);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LogoutOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Logout()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Logout);
+            LogoutOverride(callInfo);
             return callInfo;
         }
 

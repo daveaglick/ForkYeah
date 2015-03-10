@@ -46,8 +46,10 @@
                 {
                     using(@navbar.NavbarText().Begin())
                     {
-                        @Bs.Image(Model.UserAvatarUrl).AddStyle("height", "20px").AddStyle("margin-right", "6px").SetStyle(ImageStyle.Rounded)
-                        @Bs.Link(Model.UserLogin, Model.UserHtmlUrl)
+                        <text>
+                            @Bs.Image(Model.UserAvatarUrl).AddStyle("height", "20px").AddStyle("margin-right", "6px").SetStyle(ImageStyle.Rounded)
+                            @Bs.Link(Model.UserLogin, Model.UserHtmlUrl) (@Bs.Link("Logout", MVC.Default.Logout()))
+                        </text>
                     }
                 }
                 @navbar.NavbarButton("Login").SetIcon(Icon.LogIn).SetState(ButtonState.Default).AddCss("login-button").RenderIf(!Model.Authorized)
@@ -114,162 +116,164 @@
     }
 
     <script>
-        $(document).ready(function () {
-            afterSuccess();
+    $(document).ready(function () {
+        afterSuccess();
 
-            $('#navbar-collapse').collapse({ 'toggle': false });
+        $('#navbar-collapse').collapse({ 'toggle': false });
 
-            var languageFilter = docCookies.getItem("language");
-            if (languageFilter != null) {
-                $(".select-language").val(languageFilter);
+        var languageFilter = docCookies.getItem("language");
+        if (languageFilter != null) {
+            $(".select-language").val(languageFilter);
+        }
+
+        // Initially load the active list and whatever happens to be in the address bar for the content
+        var activeAction = "@(Url.Action(MVC.Default.Active()))";
+        $("#list").load(activeAction, {});
+        $("#content").load(document.location.pathname, {});
+
+        history.pushState({}, null, document.location.pathname);
+
+        resizeNavbar();
+    });
+
+    $(window).resize(function () {
+        resizeNavbar();
+    });
+
+    function resizeNavbar() {
+        if (window.innerWidth < 1200) {
+            $(".navbar").removeClass("@(Css.NavbarFixedTop)");
+            $(".navbar").addClass("@(Css.NavbarStaticTop)");
+        } else {
+            $(".navbar").removeClass("@(Css.NavbarStaticTop)");
+            $(".navbar").addClass("@(Css.NavbarFixedTop)");
+        }
+    }
+
+    $(document).ajaxSend(function () {
+        document.title = 'Fork Yeah!';
+        $("#navbar-collapse").collapse('hide');
+        hideContent();
+    });
+
+    $(document).ajaxSuccess(function () {
+        afterSuccess();
+
+        // Make sure we hide the content for root requests (since the content view will show it when loaded)
+        if (document.location.pathname == "/") {
+            hideContent();
+        }
+    });
+
+    $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+        if (jqxhr.status == 404) {
+            $("#content").load("/Content/404.html");
+        } else {
+            $("#content").load("/Content/500.html");
+        }
+    });
+
+    // Common behavior for document ready and after Ajax calls
+    function afterSuccess() {
+        $(".scroll-wrapper").niceScroll();
+    }
+
+    // Use .on() instead of .click() so that dynamic elements also bubble-up and get handled
+
+    $(document).on("click", ".login-button", function () {
+        var authAction = "@(Url.Action(MVC.Default.Auth()))";
+        authAction += "?@(MVC.Default.AuthParams.path)=" + document.location.pathname;
+        window.location.href = authAction;
+        return false;
+    });
+
+    $(document).on("click", ".add-button", function () {
+        var addAction = "@(Url.Action(MVC.Default.Add()))";
+        $("#content").load(addAction, {});
+        history.pushState({}, null, addAction);
+        return false;
+    });
+
+    $(document).on("click", ".active-link", function () {
+        var activeAction = "@(Url.Action(MVC.Default.Active()))";
+        $("#list").load(activeAction, {});
+        return false;
+    });
+
+    $(document).on("click", ".archive-link", function () {
+        var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
+        $("#list").load(archiveAction, {});
+        return false;
+    });
+
+    $(document).on("click", ".repository-star", function () {
+        var star = $(this);
+        var owner = star.data("owner");
+        var name = star.data("name");
+        var starAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Star()))";
+        starAction = starAction.replace("{@(MVC.Default.StarParams.owner)}", owner);
+        starAction = starAction.replace("{@(MVC.Default.StarParams.name)}", name);
+        $.post(starAction, function (result) {
+            if (result !== "") {
+                // Need to authenticate
+                var authAction = "@(Url.Action(MVC.Default.Auth()))";
+                authAction += "?@(MVC.Default.AuthParams.path)=" + document.location.pathname;
+                authAction += "&@(MVC.Default.AuthParams.owner)=" + owner;
+                authAction += "&@(MVC.Default.AuthParams.name)=" + name;
+                window.location.href = authAction;
+            } else {
+                // Success, increment the star count and disable
+                star.addClass("@(Css.Disabled)");
+                star.parent().find(".star-count").each(function () {
+                    $(this).html((parseInt($(this).html(), 10) || 0) + 1);
+                });
             }
+        });
+        return false;
+    });
 
-            // Initially load the active list and whatever happens to be in the address bar for the content
+    $(document).on("click", ".repository-link", function () {
+        var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
+        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
+        detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
+        $("#content").load(detailsAction, {});
+        history.pushState({}, null, detailsAction);
+        return false;
+    });
+
+    var changingLanguageFilter = false;
+    $(document).on("click", ".select-language", function () {
+        if (changingLanguageFilter == false) {
+            changingLanguageFilter = true;
+            var languageFilter = $(this).val();
+            if (languageFilter == "") {
+                docCookies.removeItem("language", "/");
+            } else {
+                docCookies.setItem("language", languageFilter, null, "/")
+            }
             var activeAction = "@(Url.Action(MVC.Default.Active()))";
             $("#list").load(activeAction, {});
-            $("#content").load(document.location.pathname, {});
-
-            history.pushState({}, null, document.location.pathname);
-
-            resizeNavbar();
-        });
-
-        $(window).resize(function () {
-            resizeNavbar();
-        });
-
-        function resizeNavbar() {
-            if (window.innerWidth < 1200) {
-                $(".navbar").removeClass("@(Css.NavbarFixedTop)");
-                $(".navbar").addClass("@(Css.NavbarStaticTop)");
-            } else {
-                $(".navbar").removeClass("@(Css.NavbarStaticTop)");
-                $(".navbar").addClass("@(Css.NavbarFixedTop)");
-            }
+            $(".select-language").val(languageFilter);
+            changingLanguageFilter = false;
         }
+    });
 
-        $(document).ajaxSend(function () {
-            document.title = 'Fork Yeah!';
-            $("#navbar-collapse").collapse('hide');
-            hideContent();
-        });
-
-        $(document).ajaxSuccess(function () {
-            afterSuccess();
-
-            // Make sure we hide the content for root requests (since the content view will show it when loaded)
-            if (document.location.pathname == "/") {
-                hideContent();
-            }
-        });
-
-        $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
-            if (jqxhr.status == 404) {
-                $("#content").load("/Content/404.html");
-            } else {
-                $("#content").load("/Content/500.html");
-            }
-        });
-
-        // Common behavior for document ready and after Ajax calls
-        function afterSuccess() {
-            $(".scroll-wrapper").niceScroll();
-
-            // Rebind the click handlers on every successful ajax call
-            $(".login-button").click(function () {
-                var authAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Auth()))";
-                authAction = authAction.replace("{@(MVC.Default.AuthParams.path)}", document.location.pathname);
-                window.location.href = authAction;
-                return false;
-            });
-
-            $(".add-button").click(function () {
-                var addAction = "@(Url.Action(MVC.Default.Add()))";
-                $("#content").load(addAction, {});
-                history.pushState({}, null, addAction);
-                return false;
-            });
-
-            $(".active-link").click(function () {
-                var activeAction = "@(Url.Action(MVC.Default.Active()))";
-                $("#list").load(activeAction, {});
-                return false;
-            });
-
-            $(".archive-link").click(function () {
-                var archiveAction = "@(Url.Action(MVC.Default.Archive()))";
-                $("#list").load(archiveAction, {});
-                return false;
-            });
-
-            $(".repository-star").click(function () {
-                var owner = $(this).data("owner");
-                var name = $(this).data("name");
-                var starAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Star()))";
-                starAction = starAction.replace("{@(MVC.Default.StarParams.owner)}", owner);
-                starAction = starAction.replace("{@(MVC.Default.StarParams.name)}", name);
-                $.post(starAction, function (result) {
-                    if (result !== "") {
-                        // Need to authenticate
-                        var authAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Auth()))";
-                        authAction = authAction.replace("{@(MVC.Default.AuthParams.path)}", document.location.pathname);
-                        authAction = authAction.replace("{@(MVC.Default.AuthParams.owner)}", owner);
-                        authAction = authAction.replace("{@(MVC.Default.AuthParams.path)}", name);
-                        window.location.href = authAction;
-                    } else {
-                        // Success, increment the star count and disable
-                        $(this).addClass("@(Css.Disabled)");
-                        $(this).parent().find(".star-count").each(function () {
-                            $(this).html((parseInt($number.html(), 10) || 0) + 1);
-                        });
-                    }
-                });
-                return false;
-            });
-
-            $(".repository-link").click(function () {
-                var detailsAction = "@(Url.JavaScriptReplaceableUrl(MVC.Default.Details()))";
-                detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.owner)}", $(this).data("owner"));
-                detailsAction = detailsAction.replace("{@(MVC.Default.DetailsParams.name)}", $(this).data("name"));
-                $("#content").load(detailsAction, {});
-                history.pushState({}, null, detailsAction);
-                return false;
-            });
+    window.onpopstate = function (event) {
+        if (event.state == null) {
+            return;
         }
+        $("#content").load(document.location.pathname, {});
+    };
 
-        var changingLanguageFilter = false;
-        $(".select-language").change(function () {
-            if (changingLanguageFilter == false) {
-                changingLanguageFilter = true;
-                var languageFilter = $(this).val();
-                if (languageFilter == "") {
-                    docCookies.removeItem("language", "/");
-                } else {
-                    docCookies.setItem("language", languageFilter, null, "/")
-                }
-                var activeAction = "@(Url.Action(MVC.Default.Active()))";
-                $("#list").load(activeAction, {});
-                $(".select-language").val(languageFilter);
-                changingLanguageFilter = false;
-            }
-        });
+    function showContent() {
+        $("#list").addClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+        $("#content").removeClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+    }
 
-        window.onpopstate = function (event) {
-            if (event.state == null) {
-                return;
-            }
-            $("#content").load(document.location.pathname, {});
-        };
-
-        function showContent() {
-            $("#list").addClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
-            $("#content").removeClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
-        }
-
-        function hideContent() {
-            $("#content").addClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
-            $("#list").removeClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
-        }
+    function hideContent() {
+        $("#content").addClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+        $("#list").removeClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
+    }
     </script>
  </body>
 </html>
