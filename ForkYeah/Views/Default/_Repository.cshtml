@@ -18,7 +18,7 @@
         using (Bs.Heading3().Begin())
         {
             @Bs.Link(Model.Name).AddCss("repository-link").AddAttribute("data-owner", Model.Owner).AddAttribute("data-name", Model.Name)
-            @Bs.Small(Bs.Icon(Icon.Comment).ToString() + " 4 Comments")  // TODO: Integrate Disqus count
+            @Bs.Small(string.Format("{0} <span class='disqus-comment-count' data-disqus-identifier='/{1}/{2}'>0 Comments</span>", Bs.Icon(Icon.Comment).ToString(), Model.Owner, Model.Name))
         }
                                 
         // TODO: Link this to a filter for the language

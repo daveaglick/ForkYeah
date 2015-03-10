@@ -28,7 +28,7 @@
                         {
                             @Bs.Strong(Bs.Badge(Model.Language).ToString())
                         }
-                        @Bs.Span().AddCss("octicon", "octicon-star") @Model.StargazersCount Stars (@Model.StargazersCountChange.ToString("+0;-0;0")) /
+                        @Bs.Span().AddCss("octicon", "octicon-star") @Model.StargazersCount Stars (@Model.StargazersCountChange.ToString("+0;-0;+0")) /
                         @Bs.Span().AddCss("octicon", "octicon-repo-forked") @Model.ForksCount Forks /
                         @Bs.Span().AddCss("octicon", "octicon-history") @Model.CommitCount Commits / 
                         @Bs.Span().AddCss("octicon", "octicon-organization") @Model.ContributorCount Contributors /
@@ -56,10 +56,11 @@
                             {
                                 using (Bs.Div().AddCss("padded-top").Begin())
                                 {
-                                    for (int c = 0; c < 100; c++)
-                                    {
-                                        @Bs.Paragraph("comments, comments, comments... " + c)
-                                    }
+                                    <text>
+                                        <div id="disqus_thread"></div>
+                                        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                                        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+                                    </text>
                                 }
                             }
                         }
@@ -86,4 +87,13 @@
 <script>
     document.title = 'Fork Yeah! - @(Model.Name)';
     showContent();
+
+    DISQUS.reset({
+        reload: true,
+        config: function () {
+            this.page.identifier = document.location.pathname;
+            this.page.url = 'http://www.forkyeah.net' + document.location.pathname;
+            this.page.title = '@(Model.Name)';
+        }
+    });
 </script>
