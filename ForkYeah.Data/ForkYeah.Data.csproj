@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,14 +47,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncHelper.cs" />
+    <Compile Include="ForkYeahConfiguration.cs" />
     <Compile Include="ForkYeahContext.cs" />
     <Compile Include="Migrations\201502272026047_InitialCreate.cs" />
     <Compile Include="Migrations\201502272026047_InitialCreate.Designer.cs">
       <DependentUpon>201502272026047_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503112030126_UpdateHistory.cs" />
+    <Compile Include="Migrations\201503112030126_UpdateHistory.Designer.cs">
+      <DependentUpon>201503112030126_UpdateHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="UpdateHistory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -62,6 +70,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201502272026047_InitialCreate.resx">
       <DependentUpon>201502272026047_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503112030126_UpdateHistory.resx">
+      <DependentUpon>201503112030126_UpdateHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

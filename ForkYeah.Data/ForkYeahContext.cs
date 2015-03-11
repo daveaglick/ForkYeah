@@ -12,7 +12,14 @@ namespace ForkYeah.Data
         public ForkYeahContext() : base("ForkYeahConnectionString")
         {
         }
-        
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ForkYeahContext, Migrations.Configuration>());
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Repository> Repositories { get; set; }
+        public DbSet<UpdateHistory> UpdateHistories { get; set; }
     }
 }

@@ -211,7 +211,9 @@ namespace ForkYeah.Controllers
             string readmeHtml;
             try
             {
+                string token = System.Configuration.ConfigurationManager.AppSettings["GitHubToken"];
                 GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
+                github.Credentials = new Credentials(token);
                 
                 // Fetch the repository
                 try
@@ -389,6 +391,23 @@ namespace ForkYeah.Controllers
             if (repository == null)
             {
                 return HttpNotFound();
+            }
+
+            // Check if we need to update the details
+            if(repository.UpdatedAt > repository.DbDetailsUpdated)
+            {
+                string token = System.Configuration.ConfigurationManager.AppSettings["GitHubToken"];
+                GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
+                github.Credentials = new Credentials(token);
+
+                IEnumerable<Contributor> contributors = AsyncHelper.RunSync(() => github.Repository.Statistics.GetContributors(owner, name));
+                repository.ContributorCount = contributors.Count();
+                repository.CommitCount = contributors.Sum(x => x.Total);
+
+                string readmeHtml = AsyncHelper.RunSync(() => github.Repository.Content.GetReadmeHtml(owner, name));
+                repository.ReadmeHtml = readmeHtml;
+
+                _db.SaveChanges();
             }
 
             return PartialView(new RepositoryDetails()
