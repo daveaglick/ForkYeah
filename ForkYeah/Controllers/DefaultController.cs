@@ -114,7 +114,7 @@ namespace ForkYeah.Controllers
             GitHubClient github = new GitHubClient(new ProductHeaderValue("ForkYeah"));
             OauthLoginRequest loginRequest = new OauthLoginRequest(clientId)
             {
-                Scopes = { "user" },
+                Scopes = { "public_repo" },
                 State = csrf + " " + path + " " + owner + " " + name
             };
             return Redirect(github.Oauth.GetGitHubLoginUrl(loginRequest).ToString());
