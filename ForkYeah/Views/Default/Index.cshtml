@@ -121,6 +121,7 @@
 
         $('#navbar-collapse').collapse({ 'toggle': false });
 
+        // Set the language filter
         var languageFilter = docCookies.getItem("language");
         if (languageFilter != null) {
             $(".select-language").val(languageFilter);
@@ -275,10 +276,10 @@
         $("#list").removeClass("@(Css.HiddenMd) @(Css.HiddenSm) @(Css.HiddenXs)");
     }
 
-    /* * * CONFIGURATION VARIABLES * * */
+    // Disqus
     var disqus_shortname = 'forkyeah';
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
+
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
@@ -286,12 +287,21 @@
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
     (function () {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
+
+    // Google Analytics
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-54470483-3', 'auto');
+    ga('send', 'pageview');
+
     </script>
  </body>
 </html>
