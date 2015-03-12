@@ -135,6 +135,12 @@
         history.pushState({}, null, document.location.pathname);
 
         resizeNavbar();
+
+        // For some reason, Chrome needs to calculate size once via JavaScript for the scrolling divs to work
+        // See http://stackoverflow.com/q/29013035/807064
+        $("#intro").height(0);
+        $("#list").height(0);
+        $("#content").height(0);
     });
 
     $(window).resize(function () {
