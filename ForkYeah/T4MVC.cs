@@ -202,6 +202,7 @@ namespace Links
             public static readonly string sprockets_octicons_scss = Url("sprockets-octicons.scss");
         }
     
+        public static readonly string test_html = Url("test.html");
     }
 
     

@@ -126,6 +126,7 @@
     <Content Include="Content\octicons\LICENSE.txt" />
     <Content Include="Content\octicons\octicons.css" />
     <Content Include="Content\octicons\octicons.svg" />
+    <Content Include="Content\test.html" />
     <Content Include="Global.asax" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
